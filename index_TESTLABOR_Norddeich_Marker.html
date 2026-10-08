@@ -1,0 +1,9112 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>NORTHWIND // GREYFOX</title>
+
+<link rel="apple-touch-icon" href="30044FF6-AAB2-4E5B-8356-501A505CA848.png">
+<link rel="icon" type="image/png" href="30044FF6-AAB2-4E5B-8356-501A505CA848.png">
+
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{
+  margin:0;width:100%;height:100%;overflow:hidden;
+  background:#050b0e;color:#eee;
+  font-family:Arial,Helvetica,sans-serif
+}
+body{min-height:100dvh}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+
+/* =========================================================
+   START
+   ========================================================= */
+
+#mainScreen{
+  position:fixed;inset:0;min-height:100dvh;overflow:hidden;
+  background:
+    linear-gradient(rgba(2,7,9,.18),rgba(2,7,9,.34)),
+    url("E4BD210F-D0C2-49E9-B754-0CD42E9F2CD4.png")
+    center/cover no-repeat
+}
+
+.top-panel{
+  position:absolute;left:6%;right:6%;
+  top:max(6%,env(safe-area-inset-top));
+  padding:14px 15px 13px;
+  border-left:3px solid #c79b3c;
+  background:rgba(4,10,12,.72)
+}
+.kicker{
+  color:#d4ad55;font-size:10px;font-weight:700;
+  letter-spacing:1.4px;margin-bottom:5px
+}
+.agency{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:19px;line-height:1.05
+}
+.intro{
+  margin-top:9px;color:#d8d8d8;
+  font-size:10px;line-height:1.4
+}
+
+#gate{
+  position:absolute;left:7%;right:7%;top:43%;
+  padding:16px 15px;background:rgba(4,10,12,.86);
+  border:1px solid rgba(201,165,87,.48)
+}
+.gate-title{
+  color:#d4ad55;font-size:10px;font-weight:700;
+  letter-spacing:1.4px;margin-bottom:10px
+}
+.question{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:15px;line-height:1.3;margin-bottom:12px
+}
+#answer{
+  width:100%;border:1px solid rgba(255,255,255,.28);
+  background:rgba(255,255,255,.07);color:#fff;
+  padding:10px 11px;outline:none;border-radius:0;font-size:16px
+}
+#checkButton{
+  width:100%;margin-top:10px;padding:11px;
+  border:1px solid #c9a557;background:#b58b34;color:#080b0c;
+  font-weight:800;font-size:10px;letter-spacing:1px
+}
+#error{
+  display:none;margin-top:9px;padding:8px 9px;
+  border-left:2px solid #a8453e;background:rgba(80,8,8,.24);
+  color:#d9b1a8;font-size:9px;line-height:1.5;letter-spacing:.35px
+}
+
+.footer{
+  position:absolute;left:6%;right:6%;
+  bottom:max(3%,env(safe-area-inset-bottom));
+  color:rgba(255,255,255,.62);
+  font-size:7px;line-height:1.6;letter-spacing:.7px
+}
+
+/* =========================================================
+   SPRACHKANAL // NW-GF/02
+   ========================================================= */
+
+#voiceScreen{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:450;
+  background:#020607;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch
+}
+
+.voiceStage{
+  position:relative;
+  width:100%;
+  max-width:832px;
+  margin:0 auto;
+  background:#020607
+}
+
+#voiceBackground{
+  display:block;
+  width:100%;
+  height:auto;
+  user-select:none;
+  -webkit-user-select:none;
+  pointer-events:none
+}
+#voiceArchiveLabelOverlay{
+  position:absolute;
+  z-index:459;
+  left:8%;
+  top:87.7%;
+  width:84%;
+  padding:8px 4px 14px;
+  background:#071013;
+  color:#d4ad55;
+  text-align:center;
+  font-family:"Courier New",monospace;
+  font-size:clamp(8px,2.4vw,14px);
+  font-weight:900;
+  letter-spacing:1px;
+  pointer-events:none;
+}
+.voiceHotspot{
+  position:absolute;
+  z-index:460;
+  padding:0;
+  margin:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:transparent;
+  outline:none;
+  appearance:none;
+  -webkit-appearance:none
+}
+
+.voiceHotspot:disabled{
+  pointer-events:none
+}
+
+.voiceHotspot.pressed{
+  background:rgba(215,174,74,.07);
+  box-shadow:inset 0 0 24px rgba(215,174,74,.16)
+}
+
+#voiceBack{
+  left:4.5%;
+  top:2.4%;
+  width:48%;
+  height:4.3%
+}
+
+#voiceRecord{
+  left:5%;
+  top:46.4%;
+  width:19%;
+  height:9%
+}
+
+#voiceStop{
+  left:24%;
+  top:46.4%;
+  width:18%;
+  height:9%
+}
+
+#voicePlay{
+  left:42%;
+  top:46.4%;
+  width:18%;
+  height:9%
+}
+
+#voiceDelete{
+  left:60%;
+  top:46.4%;
+  width:18%;
+  height:9%
+}
+
+#voiceSend{
+  left:78%;
+  top:46.4%;
+  width:18%;
+  height:9%
+}
+
+#voiceArchiveOpen{
+  left:3%;
+  top:80.5%;
+  width:94%;
+  height:12%
+}
+
+#voiceWaveCanvas{
+  position:absolute;
+  z-index:455;
+  left:33%;
+  top:31.2%;
+  width:34%;
+  height:7.2%;
+  pointer-events:none;
+  opacity:.9
+}
+
+#voiceNeedle{
+  position:absolute;
+  z-index:456;
+  left:18.1%;
+  top:31.8%;
+  width:2px;
+  height:5.2%;
+  background:#e1b655;
+  box-shadow:0 0 5px rgba(255,199,78,.8);
+  transform-origin:50% 100%;
+  transform:rotate(-34deg);
+  transition:transform .06s linear;
+  pointer-events:none
+}
+#voiceTimerCover{
+  position:absolute;
+  z-index:456;
+  left:33.5%;
+  top:60.5%;
+  width:32%;
+  height:4.8%;
+  background:#05090a;
+  pointer-events:none;
+}
+#voiceTimerOverlay{
+  position:absolute;
+  z-index:457;
+  left:35%;
+  top:61.5%;
+  width:30%;
+  text-align:center;
+  color:#d6b158;
+  font-family:"Courier New",monospace;
+  font-size:clamp(12px,3.6vw,24px);
+  font-weight:900;
+  letter-spacing:2px;
+  text-shadow:0 1px 5px #000;
+  pointer-events:none
+}
+
+#voiceStatusOverlay{
+  position:absolute;
+  z-index:457;
+  left:23%;
+  top:44.5%;
+  width:54%;
+  text-align:center;
+  color:#c9a557;
+  font-size:clamp(6px,1.8vw,11px);
+  font-weight:900;
+  letter-spacing:1px;
+  text-shadow:0 1px 4px #000;
+  pointer-events:none
+}
+
+#voiceIdentityDisplay{
+  position:absolute;
+  z-index:457;
+  left:20%;
+  top:57.3%;
+  width:60%;
+  text-align:center;
+  color:#91836b;
+  font-size:clamp(6px,1.65vw,10px);
+  font-weight:800;
+  letter-spacing:.9px;
+  text-shadow:0 1px 4px #000;
+  pointer-events:none
+}
+
+.voiceLamp{
+  position:absolute;
+  z-index:458;
+  width:1.5%;
+  aspect-ratio:1;
+  border-radius:50%;
+  opacity:.15;
+  pointer-events:none
+}
+
+#voiceRecordLamp{
+  left:14%;
+  top:45.8%;
+  background:#ff3a2e
+}
+
+#voiceReadyLamp{
+  left:50%;
+  top:45.8%;
+  background:#e0b94f
+}
+
+#voiceSendLamp{
+  left:87%;
+  top:45.8%;
+  background:#54dc76
+}
+
+#voiceRecordLamp.active{
+  opacity:1;
+  box-shadow:0 0 12px 5px rgba(255,45,35,.75)
+}
+
+#voiceReadyLamp.active{
+  opacity:1;
+  box-shadow:0 0 12px 5px rgba(225,185,70,.65)
+}
+
+#voiceSendLamp.active{
+  opacity:1;
+  box-shadow:0 0 12px 5px rgba(65,225,105,.65)
+}
+
+/* IDENTITÄT SPRACHKANAL */
+
+#voiceIdentityModal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:520;
+  background:rgba(1,5,7,.95);
+  align-items:center;
+  justify-content:center;
+  padding:24px
+}
+
+#voiceIdentityModal.active{
+  display:flex
+}
+
+.voiceIdentityBox{
+  width:min(92vw,440px);
+  padding:22px 18px;
+  border:1px solid rgba(201,165,87,.52);
+  background:#071013;
+  box-shadow:0 16px 45px #000
+}
+
+.voiceIdentityKicker{
+  color:#d4ad55;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:1.5px
+}
+
+.voiceIdentityTitle{
+  margin-top:10px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:20px;
+  line-height:1.25
+}
+
+.voiceIdentityText{
+  margin-top:10px;
+  color:#999;
+  font-size:10px;
+  line-height:1.5
+}
+
+.voiceIdentityChoice{
+  width:100%;
+  margin-top:11px;
+  padding:14px 12px;
+  text-align:left;
+  border:1px solid rgba(201,165,87,.5);
+  background:#111719;
+  color:#eee
+}
+
+.voiceIdentityChoice strong{
+  display:block;
+  color:#d4ad55;
+  font-size:10px;
+  letter-spacing:1px
+}
+
+.voiceIdentityChoice span{
+  display:block;
+  margin-top:4px;
+  color:#999;
+  font-size:9px;
+  letter-spacing:.8px
+}
+
+#voiceIdentityCancel{
+  width:100%;
+  margin-top:13px;
+  padding:10px;
+  border:1px solid #555;
+  background:transparent;
+  color:#888;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:1px
+}
+/* NW-GF/02 // LAYOUT-KORREKTUR */
+
+#voiceScreen{
+  overflow:hidden;
+}
+
+.voiceStage{
+  width:min(100vw,46.43dvh);
+  max-width:832px;
+  margin:0 auto;
+}
+
+#voiceWaveCanvas{
+  left:39.5%;
+  top:38.8%;
+  width:34.5%;
+  height:6.2%;
+  overflow:hidden;
+}
+
+#voiceNeedle{
+  left:21.5%;
+  top:39%;
+  height:5.4%;
+}
+/* SPRACHARCHIV */
+
+#voiceArchiveScreen{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:500;
+  background:rgba(2,6,8,.98);
+  padding:
+    max(18px,env(safe-area-inset-top))
+    14px
+    max(18px,env(safe-area-inset-bottom));
+  overflow:hidden
+}
+
+#voiceArchiveScreen.active{
+  display:block
+}
+
+.voiceArchivePaper{
+  width:min(94vw,500px);
+  height:100%;
+  margin:auto;
+  padding:17px 14px;
+  border:1px solid rgba(201,165,87,.42);
+  background:#071013;
+  display:flex;
+  flex-direction:column
+}
+
+.voiceArchiveTitle{
+  color:#d4ad55;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:1.2px
+}
+
+.voiceArchiveSub{
+  margin-top:5px;
+  padding-bottom:12px;
+  border-bottom:1px solid #3c3629;
+  color:#777;
+  font-size:8px;
+  letter-spacing:1px
+}
+
+#voiceArchiveList{
+  flex:1;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  padding-top:10px
+}
+
+.voiceArchiveEntry{
+  display:block;
+  width:100%;
+  margin-bottom:9px;
+  padding:11px;
+  text-align:left;
+  border:1px solid rgba(201,165,87,.3);
+  background:#101719;
+  color:#eee
+}
+
+.voiceArchiveDate{
+  color:#d4ad55;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.7px
+}
+
+.voiceArchiveRoute{
+  margin-top:5px;
+  font-size:9px;
+  font-weight:800
+}
+
+.voiceArchiveDuration{
+  margin-top:4px;
+  color:#777;
+  font-size:8px
+}
+
+.voiceArchivePlay{
+  width:100%;
+  margin-top:8px;
+  padding:9px;
+  border:1px solid #705a35;
+  background:#26221b;
+  color:#eee;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:1px
+}
+
+.voiceArchiveEmpty{
+  padding:30px 10px;
+  text-align:center;
+  color:#777;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:14px
+}
+
+#voiceArchiveBack{
+  width:100%;
+  margin-top:10px;
+  padding:11px;
+  border:1px solid #a88435;
+  background:#16130d;
+  color:#d4ad55;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:1px
+}
+
+#voiceIdentityReset{
+  width:100%;
+  margin-top:7px;
+  padding:8px;
+  border:0;
+  background:transparent;
+  color:#666;
+  font-size:7px;
+  letter-spacing:.8px
+}
+
+/* =========================================================
+   F-7
+   ========================================================= */
+
+#securityLock{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(38,0,0,.94);
+  align-items:center;justify-content:center;text-align:center;padding:28px
+}
+#securityLock.active{display:flex}
+.security-box{
+  width:min(92vw,460px);padding:24px 18px;
+  border:1px solid rgba(230,70,60,.68);
+  background:rgba(7,4,4,.90);
+  box-shadow:0 0 42px rgba(180,0,0,.28)
+}
+.security-protocol{
+  color:#ff736a;font-size:10px;font-weight:900;letter-spacing:1.5px
+}
+.security-title{
+  margin-top:11px;font-family:Georgia,"Times New Roman",serif;
+  font-size:20px;line-height:1.25
+}
+.security-dry{
+  margin-top:15px;color:#d7b7b4;font-size:10px;line-height:1.45
+}
+#securityCountdown{
+  margin-top:23px;color:#fff;font-size:12px;
+  font-weight:800;letter-spacing:1.5px
+}
+#securityLock.alarm-flash{animation:alarmFlash .20s linear 5}
+@keyframes alarmFlash{
+  0%,100%{background:rgba(38,0,0,.94)}
+  50%{background:rgba(115,0,0,.97)}
+}
+
+/* =========================================================
+   ZENTRALE
+   ========================================================= */
+
+#selection{
+  display:none;position:absolute;inset:0;
+  padding:max(5vh,env(safe-area-inset-top)) 7%
+          max(4vh,env(safe-area-inset-bottom));
+  background:rgba(2,7,9,.48);
+  overflow:auto
+}
+.confirmed{
+  margin-top:3vh;padding:12px 13px;
+  border-left:3px solid #c79b3c;
+  background:rgba(4,10,12,.80)
+}
+.confirmed .small{
+  color:#d4ad55;font-size:9px;font-weight:700;letter-spacing:1.3px
+}
+.confirmed .big{
+  margin-top:4px;font-family:Georgia,"Times New Roman",serif;font-size:18px
+}
+.central-code{
+  margin-top:6px;color:#aaa;font-size:7px;letter-spacing:1px
+}
+
+.cards{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:8px
+}
+.agent-card,.archive-card{
+  position:relative;width:100%;padding:11px 10px;text-align:left;
+  border:1px solid rgba(201,165,87,.46);
+  background:rgba(4,10,12,.86);color:#fff
+}
+.agent-code{
+  color:#d4ad55;font-size:9px;font-weight:800;letter-spacing:1.4px
+}
+.agent-name{
+  margin-top:4px;font-family:Georgia,"Times New Roman",serif;font-size:20px
+}
+.agent-card .agent-name{
+  font-size:16px
+}
+.agent-division{
+  margin-top:4px;color:#aaa;font-size:8px;letter-spacing:.9px
+}
+.agent-card .agent-division{
+  font-size:7px
+}
+.transmission-badge{
+  display:none;position:absolute;right:8px;top:8px;
+  color:#ff5b52;font-size:7px;font-weight:900;letter-spacing:.5px;
+  animation:transmissionPulse 1.1s ease-in-out infinite
+}
+@keyframes transmissionPulse{
+  0%,100%{opacity:1}50%{opacity:.28}
+}
+.archive-card{
+  grid-column:1 / -1;
+  padding:9px 11px
+}
+.archive-card .agent-name{
+  font-size:14px
+}
+.archive-card .agent-division{
+  margin-top:2px
+}
+
+#voiceBadge{
+  display:none;
+  position:absolute;
+  right:8px;
+  top:8px;
+  color:#ff5b52;
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.5px;
+  animation:transmissionPulse 1.1s ease-in-out infinite
+}
+
+#centralEndSession{
+  width:100%;margin-top:14px;padding:11px;
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(2,8,12,.84);color:#ddd;
+  font-size:8px;font-weight:800;letter-spacing:1px
+}
+
+/* =========================================================
+   AKTEN
+   ========================================================= */
+
+#northwindViewer,#greyfoxViewer{
+  display:none;position:fixed;inset:0;z-index:50;
+  overflow:hidden;background:#050b0e
+}
+#dossierUnit,#greyfoxDossierUnit{
+  position:absolute;width:92vw;height:92vh;
+  left:38%;top:50%;transform:translate(-50%,-50%)
+}
+.folder{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;pointer-events:none;user-select:none
+}
+.paperbox{
+  position:absolute;
+  left:36.77734375%;top:22.48697917%;
+  width:54.08203125%;height:62.890625%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:5
+}
+.paper{
+  display:block;max-width:100%;max-height:100%;
+  width:auto;height:auto;object-fit:contain;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));
+  pointer-events:none;user-select:none
+}
+.file-label{
+  position:fixed;z-index:80;
+  top:max(12px,env(safe-area-inset-top));
+  left:max(12px,env(safe-area-inset-left));
+  padding:7px 9px;border-left:2px solid #d8aa43;
+  background:rgba(2,8,12,.76);color:#d8aa43;
+  font-size:8px;font-weight:700;letter-spacing:1px;white-space:nowrap
+}
+.close-file{
+  position:fixed;z-index:80;
+  top:max(12px,env(safe-area-inset-top));
+  right:max(12px,env(safe-area-inset-right));
+  width:auto;padding:7px 9px;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(2,8,12,.86);color:#fff;
+  font-size:7px;font-weight:700;letter-spacing:.7px;white-space:nowrap
+}
+.page-indicator{
+  position:fixed;z-index:80;left:50%;
+  bottom:max(13px,env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  padding:6px 9px;background:rgba(2,8,12,.75);
+  color:#ddd;font-size:7px;letter-spacing:.8px;white-space:nowrap
+}
+.lock-bump{animation:lockBump .18s ease-in-out 2}
+@keyframes lockBump{
+  0%{transform:translate(-50%,-50%)}
+  50%{transform:translate(calc(-50% - 7px),-50%)}
+  100%{transform:translate(-50%,-50%)}
+}
+
+/* =========================================================
+   FUNK – MOBILE OVERLAY
+   ========================================================= */
+
+.paper-transmission{
+  display:none;
+  position:fixed;
+  z-index:120;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:min(90vw,430px);
+  max-height:calc(100dvh - 115px);
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:18px 16px;
+  background:#efe8d3;
+  color:#171512;
+  border:1px solid #77654a;
+  box-shadow:0 12px 38px rgba(0,0,0,.65);
+  cursor:default
+}
+.paper-transmission.active{display:block}
+.transmission-title{
+  color:#741d19;font-size:12px;font-weight:900;
+  letter-spacing:1px;margin-bottom:7px
+}
+.transmission-route{
+  color:#5c554a;font-size:10px;font-weight:700;
+  letter-spacing:.5px;margin-bottom:12px
+}
+.transmission-state{
+  color:#67563b;font-size:10px;font-weight:800;
+  letter-spacing:.5px;margin-bottom:8px
+}
+.transmission-text{
+  white-space:pre-wrap;
+  font-family:Georgia,"Times New Roman",serif;
+  color:#171512;font-size:16px;line-height:1.45;
+  padding:11px 0
+}
+.transmission-input{
+  display:block;width:100%;min-height:130px;resize:vertical;
+  border:1px solid rgba(62,51,38,.48);
+  background:rgba(255,255,255,.72);color:#171512;
+  padding:10px;outline:none;font-size:16px;line-height:1.4
+}
+.transmission-button{
+  display:block;width:100%;margin-top:9px;padding:11px 8px;
+  border:1px solid #705a35;background:#26221b;color:#f2eee4;
+  font-size:10px;font-weight:900;letter-spacing:.7px
+}
+.transmission-button.secondary{
+  background:#5e4b30;color:#fff
+}
+.transmission-close{
+  display:block;width:100%;margin-top:9px;padding:10px 8px;
+  border:1px solid rgba(112,90,53,.7);
+  background:transparent;color:#4b3d2c;
+  font-size:9px;font-weight:900;letter-spacing:.7px
+}
+.transmission-status{
+  min-height:14px;margin-top:8px;color:#67563b;
+  font-size:10px;line-height:1.35;font-weight:700
+}
+.compose-area{display:none}
+
+/* =========================================================
+   LESEMODUS
+   ========================================================= */
+
+#reader{
+  display:none;position:fixed;z-index:200;inset:0;
+  background:rgba(2,7,10,.98);
+  align-items:center;justify-content:center;padding:62px 10px 14px
+}
+#reader.open{display:flex}
+#readerImage{
+  display:block;max-width:96vw;max-height:calc(100dvh - 82px);
+  width:auto;height:auto;object-fit:contain;
+  filter:drop-shadow(0 5px 18px #000)
+}
+#readerClose{
+  position:fixed;z-index:300;
+  top:max(12px,env(safe-area-inset-top));
+  right:max(12px,env(safe-area-inset-right));
+  width:auto;padding:9px 11px;
+  border:1px solid rgba(255,255,255,.5);
+  background:#071015;color:#fff;
+  font-size:9px;font-weight:800;letter-spacing:.8px;white-space:nowrap
+}
+
+/* =========================================================
+   ARCHIV
+   ========================================================= */
+
+#archiveScreen{
+  display:none;position:fixed;inset:0;z-index:300;
+  background:#05090b center/cover no-repeat;
+  overflow:hidden
+}
+
+#archiveScreen.closed{
+  background-image:
+    linear-gradient(rgba(2,5,6,.08),rgba(2,5,6,.18)),
+    url("DE4950B0-D64E-4B51-8EB9-62D6495F2168.png")
+}
+#archiveScreen.opened{
+  background-image:
+    linear-gradient(rgba(2,5,6,.08),rgba(2,5,6,.18)),
+    url("2B3DDAC4-0C64-4A35-A2AA-492137603B72.png")
+}
+.archive-top{
+  position:fixed;z-index:320;
+  top:max(12px,env(safe-area-inset-top));
+  left:12px;padding:8px 10px;
+  border-left:2px solid #d8aa43;
+  background:rgba(2,8,12,.80);
+  color:#d8aa43;font-size:8px;font-weight:800;letter-spacing:1px
+}
+#archiveBack{
+  position:fixed;z-index:330;
+  top:max(12px,env(safe-area-inset-top));
+  right:12px;padding:8px 10px;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(2,8,12,.88);color:#fff;
+  font-size:7px;font-weight:800;letter-spacing:.7px
+}
+.archive-hint{
+  position:fixed;z-index:320;
+  left:50%;bottom:max(28px,env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  width:max-content;max-width:88vw;
+  padding:10px 14px;text-align:center;
+  border:1px solid rgba(201,165,87,.5);
+  background:rgba(3,9,11,.88);
+  color:#e2c271;font-size:9px;font-weight:800;letter-spacing:.8px;
+  animation:hintPulse 1.7s ease-in-out 3
+}
+@keyframes hintPulse{
+  0%,100%{box-shadow:0 0 0 rgba(201,165,87,0)}
+  50%{box-shadow:0 0 18px rgba(201,165,87,.45)}
+}
+#drawerHotspot{
+  position:absolute;z-index:310;
+  left:19%;right:18%;top:30%;height:31%;
+  background:transparent;border:0
+}
+#archiveFilesHotspot{
+  display:none;position:absolute;z-index:311;
+  left:13%;right:13%;top:28%;height:42%;
+  background:transparent;border:0
+}
+#drawerCloseHotspot{
+  display:none;
+  position:absolute;
+  z-index:312;
+  left:18%;
+  right:16%;
+  top:54%;
+  height:18%;
+  background:transparent;
+  border:0
+}
+
+#archiveIndex{
+  display:none;position:fixed;inset:0;z-index:350;
+  background:rgba(2,6,8,.91);
+  align-items:center;justify-content:center;
+  padding:65px 14px 24px
+}
+#archiveIndex.active{display:flex}
+.archive-index-paper{
+  width:min(92vw,470px);max-height:calc(100dvh - 95px);
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+  background:#eee5cb;color:#181510;
+  padding:18px 15px;border:1px solid #79684d;
+  box-shadow:0 12px 40px #000
+}
+.archive-index-title{
+  color:#6f1c18;font-size:13px;font-weight:900;letter-spacing:1px
+}
+.archive-index-sub{
+  margin-top:4px;padding-bottom:10px;
+  border-bottom:1px solid #95866c;
+  color:#655b4b;font-size:9px;letter-spacing:.7px
+}
+#archiveList{margin-top:10px}
+.archive-entry{
+  width:100%;display:block;text-align:left;
+  margin:0 0 8px;padding:11px;
+  border:1px solid #9b8c71;background:rgba(255,255,255,.38);
+  color:#171512
+}
+.archive-entry-date{
+  color:#711e1a;font-size:9px;font-weight:900;letter-spacing:.5px
+}
+.archive-entry-route{
+  margin-top:4px;font-size:10px;font-weight:800
+}
+.archive-entry-preview{
+  margin-top:5px;font-family:Georgia,"Times New Roman",serif;
+  font-size:13px;line-height:1.3;color:#40392f
+}
+.archive-empty{
+  padding:24px 8px;text-align:center;color:#665d50;
+  font-family:Georgia,"Times New Roman",serif;font-size:14px
+}
+#archiveIndexBack{
+  width:100%;margin-top:10px;padding:10px;
+  border:1px solid #705a35;background:#26221b;color:#fff;
+  font-size:9px;font-weight:900;letter-spacing:.7px
+}
+
+#archiveDocument{
+  display:none;position:fixed;inset:0;z-index:380;
+  background:rgba(1,4,5,.96);
+  align-items:center;justify-content:center;padding:60px 14px 20px
+}
+#archiveDocument.active{display:flex}
+.archive-document-paper{
+  width:min(92vw,470px);max-height:calc(100dvh - 85px);
+  overflow-y:auto;background:#eee5cb;color:#171512;
+  padding:20px 17px;border:1px solid #79684d;
+  box-shadow:0 14px 45px #000
+}
+#archiveDocumentDate{
+  color:#711e1a;font-size:10px;font-weight:900;letter-spacing:.7px
+}
+#archiveDocumentRoute{
+  margin-top:6px;padding-bottom:12px;border-bottom:1px solid #95866c;
+  color:#544b3e;font-size:10px;font-weight:800
+}
+#archiveDocumentText{
+  margin-top:18px;white-space:pre-wrap;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:17px;line-height:1.55
+}
+#archiveDocumentBack{
+  width:100%;margin-top:20px;padding:11px;
+  border:1px solid #705a35;background:#26221b;color:#fff;
+  font-size:9px;font-weight:900;letter-spacing:.7px
+}
+
+/* =========================================================
+   SITZUNGSFINALE
+   ========================================================= */
+
+#sessionEnd{
+  display:none;position:fixed;inset:0;z-index:800;
+  background:#020506;align-items:center;justify-content:center;
+  text-align:center;padding:25px
+}
+#sessionEnd.active{display:flex}
+
+.session-sequence{
+  width:min(90vw,440px);
+  padding:26px 18px;
+  border:1px solid rgba(201,165,87,.40);
+  background:rgba(4,9,11,.96)
+}
+.session-kicker{
+  color:#d4ad55;font-size:9px;font-weight:900;letter-spacing:1.4px
+}
+#sessionSequenceTitle{
+  margin-top:13px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:20px;line-height:1.3
+}
+#sessionSequenceLine{
+  min-height:18px;margin-top:14px;color:#aaa;
+  font-size:9px;letter-spacing:1px;line-height:1.6
+}
+.terminal-bar{
+  height:1px;width:100%;margin-top:22px;
+  background:#b58b34;
+  transform-origin:center;
+  transition:transform .7s ease,opacity .7s ease
+}
+.terminal-bar.collapse{
+  transform:scaleX(0);opacity:0
+}
+
+#channelClosed{
+  display:none;position:fixed;inset:0;z-index:900;
+  background:#000;align-items:center;justify-content:center;text-align:center
+}
+#channelClosed.active{display:flex;animation:blackIn .8s ease}
+@keyframes blackIn{from{opacity:0}to{opacity:1}}
+.closed-mark{
+  color:#b58b34;font-size:26px;margin-bottom:16px;
+  animation:closedFade 1.2s ease
+}
+.closed-title{
+  color:#777;font-size:10px;font-weight:900;letter-spacing:2px
+}
+.closed-code{
+  margin-top:7px;color:#333;font-size:7px;letter-spacing:1px
+}
+@keyframes closedFade{
+  from{opacity:0;transform:scale(.8)}
+  to{opacity:1;transform:scale(1)}
+} 
+  /* =========================================================
+   CINEMATIC INTRO // REFERAT F
+   AUSSEN → FLUR → IDENTITÄT → BRIEFING
+   ========================================================= */
+/* =========================================================
+   SYSTEMSTART // NORTHWIND + GREYFOX
+   ========================================================= */
+#audioStartGate{
+  position:fixed;
+  inset:0;
+  z-index:1700;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#audioStartButton{
+  padding:14px 22px;
+  border:1px solid rgba(180,255,220,.65);
+  background:rgba(5,18,14,.92);
+  color:#c9ffe9;
+  font:700 12px/1.2 monospace;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:
+    0 0 12px rgba(80,255,180,.18),
+    inset 0 0 10px rgba(80,255,180,.08);
+}
+
+#audioStartButton:active{
+  transform:scale(.98);
+}
+
+#audioStartGate.off{
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease;
+}
+#agentBoot{
+  position:fixed;
+  inset:0;
+  z-index:1600;
+  background:#000;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+.bootAgent{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#000;
+  opacity:0;
+}
+
+#bootNorthwind.bootFlash{
+  animation:northwindBoot .82s linear forwards;
+}
+
+#bootGreyfox.bootFlash{
+  animation:greyfoxBoot .82s linear forwards;
+}
+
+#agentBoot::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:.20;
+  pointer-events:none;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,.10) 0px,
+      rgba(255,255,255,.10) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+}
+
+#agentBoot.bootOff{
+  animation:bootPowerOff .32s ease forwards;
+}
+
+@keyframes northwindBoot{
+  0%,12%{opacity:0}
+  13%,42%{opacity:1}
+  43%,51%{opacity:.08}
+  52%,68%{opacity:.75}
+  69%,100%{opacity:0}
+}
+
+@keyframes greyfoxBoot{
+  0%,15%{opacity:0}
+  16%,48%{opacity:1}
+  49%,58%{opacity:.06}
+  59%,76%{opacity:.8}
+  77%,100%{opacity:0}
+}
+
+@keyframes bootPowerOff{
+  0%{opacity:1}
+  55%{opacity:.35}
+  100%{opacity:0}
+}
+#cinematicIntro{
+  position:fixed;
+  inset:0;
+  z-index:1500;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.introStage{
+  position:relative;
+  width:min(100vw,66.6667dvh);
+  aspect-ratio:2/3;
+  max-height:100dvh;
+  background:#000;
+  overflow:hidden;
+}
+
+.introScene{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  pointer-events:none;
+  transform:scale(1);
+  transition:
+    opacity .75s ease,
+    transform 1.15s ease;
+}
+
+.introScene.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.introScene.zoomAway{
+  opacity:0;
+  transform:scale(1.075);
+}
+
+.introScene img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#000;
+  user-select:none;
+  -webkit-user-select:none;
+  pointer-events:none;
+}
+
+
+/* =========================================================
+   ZUGANGSPUNKTE
+   ========================================================= */
+
+.introHotspot{
+  position:absolute;
+  z-index:20;
+  border:0;
+  padding:0;
+  margin:0;
+  background:transparent;
+  appearance:none;
+  -webkit-appearance:none;
+}
+
+/* Zugang außen */
+#introExteriorHotspot{
+  right:3%;
+  top:38%;
+  width:27%;
+  height:25%;
+}
+
+/* Zugang im Flur */
+#introCorridorHotspot{
+  right:0;
+  top:31%;
+  width:22%;
+  height:26%;
+}
+
+
+/* =========================================================
+   LEUCHTRINGE
+   ========================================================= */
+
+.introRing{
+  position:absolute;
+  z-index:15;
+  border:2px solid #f0a01d;
+  border-radius:50%;
+  box-shadow:
+    0 0 9px #ff9c00,
+    0 0 24px rgba(255,136,0,.78),
+    inset 0 0 10px rgba(255,152,0,.45);
+  pointer-events:none;
+  animation:introPulse 1.45s ease-in-out infinite;
+}
+
+/* Außenansicht */
+#exteriorRing{
+  right:12.3%;
+  top:49.7%;
+  width:4.2%;
+  aspect-ratio:1;
+}
+
+/* Flur */
+#corridorRing{
+  right:12.0%;
+  top:43.9%;
+  width:3.8%;
+  aspect-ratio:1;
+}
+
+@keyframes introPulse{
+  0%,100%{
+    opacity:.65;
+    transform:scale(.94);
+  }
+
+  50%{
+    opacity:1;
+    transform:scale(1.12);
+  }
+}
+
+.introRing.arrival{
+  animation:
+    ringArrival .95s ease-out 1,
+    introPulse 1.45s ease-in-out .95s infinite;
+}
+
+@keyframes ringArrival{
+  0%{
+    opacity:0;
+    transform:scale(.35);
+    box-shadow:
+      0 0 0 rgba(255,145,0,0);
+  }
+
+  45%{
+    opacity:1;
+    transform:scale(1.5);
+    box-shadow:
+      0 0 26px #ff9d00,
+      0 0 58px rgba(255,126,0,.9);
+  }
+
+  100%{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+.introRing.granted{
+  border-color:#66db88;
+  box-shadow:
+    0 0 12px #5aff82,
+    0 0 28px rgba(70,255,126,.72);
+  animation:none;
+}
+
+
+/* =========================================================
+   IDENTITÄTSPRÜFUNG IM FLUR
+   ========================================================= */
+
+/*
+   Während der Drachen-Abfrage bleibt das Flurbild sichtbar.
+   Dieser Layer dunkelt nur den Hintergrund etwas ab.
+*/
+
+#introIdentityShade{
+  position:absolute;
+  inset:0;
+  z-index:30;
+  background:rgba(0,0,0,.46);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .4s ease;
+}
+
+#introIdentityShade.active{
+  opacity:1;
+}
+
+
+/*
+   Die vorhandene Identitätsprüfung wird im Intro
+   über dem Flurbild eingeblendet.
+*/
+
+#cinematicIntro #introIdentityGate{
+  position:absolute;
+  z-index:40;
+  left:7%;
+  right:7%;
+  top:43%;
+
+  padding:16px 15px;
+
+  background:rgba(4,10,12,.90);
+
+  border:
+    1px solid rgba(201,165,87,.58);
+
+  box-shadow:
+    0 8px 30px rgba(0,0,0,.55);
+
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+
+  transform:translateY(8px);
+
+  transition:
+    opacity .4s ease,
+    transform .4s ease,
+    visibility 0s linear .4s;
+}
+
+#cinematicIntro #introIdentityGate.active{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+
+  transform:translateY(0);
+
+  transition:
+    opacity .4s ease,
+    transform .4s ease;
+}
+
+#introIdentityGate .gate-title{
+  color:#d4ad55;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1.4px;
+  margin-bottom:10px;
+}
+
+#introIdentityGate .question{
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:15px;
+  line-height:1.3;
+  margin-bottom:12px;
+}
+
+#introAnswer{
+  width:100%;
+
+  border:
+    1px solid rgba(255,255,255,.28);
+
+  background:
+    rgba(255,255,255,.07);
+
+  color:#fff;
+
+  padding:10px 11px;
+
+  outline:none;
+
+  border-radius:0;
+
+  font-size:16px;
+}
+
+#introCheckButton{
+  width:100%;
+
+  margin-top:10px;
+
+  padding:11px;
+
+  border:
+    1px solid #c9a557;
+
+  background:#b58b34;
+
+  color:#080b0c;
+
+  font-weight:800;
+
+  font-size:10px;
+
+  letter-spacing:1px;
+}
+
+#introError{
+  display:none;
+
+  margin-top:9px;
+
+  padding:8px 9px;
+
+  border-left:
+    2px solid #a8453e;
+
+  background:
+    rgba(80,8,8,.24);
+
+  color:#d9b1a8;
+
+  font-size:9px;
+
+  line-height:1.45;
+}
+
+
+/* =========================================================
+   BRIEFING / BÜRO
+   ========================================================= */
+
+#briefingContinue{
+  position:absolute;
+
+  left:50%;
+  bottom:7%;
+
+  transform:
+    translateX(-50%);
+
+  z-index:20;
+
+  width:74%;
+
+  padding:13px 12px;
+
+  border:
+    1px solid rgba(215,176,83,.75);
+
+  background:
+    rgba(3,8,10,.88);
+
+  color:#e1bc63;
+
+  font-size:10px;
+
+  font-weight:900;
+
+  letter-spacing:1.2px;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:
+    opacity .55s ease;
+}
+
+#briefingContinue.ready{
+  opacity:1;
+  pointer-events:auto;
+}
+
+
+/* =========================================================
+   SICHERHEITSPROTOKOLL F-7
+   ========================================================= */
+
+/*
+   F-7 muss im Fehlerfall über dem gesamten Intro liegen.
+*/
+
+#securityLock{
+  z-index:2000;
+} 
+
+/* =========================================================
+   EINSATZKARTE // GEMEINSAME LAGE
+   ========================================================= */
+
+#missionMap{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:700;
+  overflow:hidden;
+  background:#020506;
+  touch-action:none;
+  overscroll-behavior:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+#missionMap.active{display:block}
+
+html.mission-map-open,
+body.mission-map-open{
+  overflow:hidden !important;
+  overscroll-behavior:none !important;
+  touch-action:none !important;
+  position:fixed;
+  width:100%;
+  height:100%;
+}
+
+#missionMapViewport{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  touch-action:none;
+}
+
+#missionMapWorld{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:min(100vw,760px);
+  transform:translate(-50%,-50%) translate3d(0,0,0) scale(1);
+  transform-origin:center center;
+  will-change:transform;
+  touch-action:none;
+}
+
+#missionMapImage{
+  display:block;
+  width:100%;
+  height:auto;
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-user-drag:none;
+}
+
+#missionMapBack{
+  position:fixed;
+  z-index:720;
+  top:max(12px,env(safe-area-inset-top));
+  right:max(12px,env(safe-area-inset-right));
+  padding:8px 10px;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(2,8,12,.88);
+  color:#fff;
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:.7px;
+}
+
+#missionMapHint{
+  position:fixed;
+  z-index:715;
+  left:50%;
+  bottom:max(13px,env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  width:max-content;
+  max-width:88vw;
+  padding:6px 9px;
+  background:rgba(2,8,12,.72);
+  color:rgba(255,255,255,.62);
+  font-size:7px;
+  letter-spacing:.8px;
+  pointer-events:none;
+  transition:opacity .5s ease;
+}
+
+#missionBlink{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:1800;
+  background:#dbe8e5;
+  opacity:0;
+  pointer-events:none;
+}
+
+#missionBlink.active{
+  display:block;
+  animation:missionBlink .34s ease-out forwards;
+}
+
+@keyframes missionBlink{
+  0%{opacity:0}
+  30%{opacity:.78}
+  100%{opacity:0}
+}
+
+
+/* Seite 4: unsichtbarer Hotspot über "VORGANG FORTSETZEN" im Lesemodus */
+#readerContinueHotspot{
+  display:none;
+  position:absolute;
+  z-index:30;
+  left:50%;
+  bottom:6.5%;
+  transform:translateX(-50%);
+  width:58%;
+  height:12%;
+  border:0;
+  padding:0;
+  margin:0;
+  background:transparent;
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+#readerContinueHotspot.active{display:block}
+
+
+/* =========================================================
+   TAKTISCHE KARTENEBENE // MISSIONEN
+   ========================================================= */
+
+#missionOverlay{
+  position:absolute;
+  inset:0;
+  z-index:8;
+  pointer-events:none;
+}
+
+.map-recon-zone{
+  position:absolute;
+  border:1px dashed rgba(150,158,153,.58);
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(151,160,154,.13) 0%,
+      rgba(118,127,122,.07) 52%,
+      rgba(70,77,73,0) 74%
+    );
+  box-shadow:
+    inset 0 0 18px rgba(165,173,168,.08),
+    0 0 12px rgba(137,145,140,.05);
+  opacity:.92;
+  transform:rotate(-8deg);
+}
+
+#norddeichRecon{
+  left:25.6%;
+  top:13.2%;
+  width:19%;
+  height:11.5%;
+  border-radius:48% 42% 50% 44%;
+}
+
+.map-mission{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  pointer-events:auto;
+  white-space:nowrap;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+#norddeichMission{
+  left:31.5%;
+  top:17.2%;
+}
+
+.map-mission-dot{
+  position:absolute;
+  left:0;
+  top:50%;
+  width:8px;
+  height:8px;
+  border:1px solid rgba(191,199,195,.95);
+  border-radius:50%;
+  background:#737b77;
+  transform:translate(-50%,-50%);
+  box-shadow:
+    0 0 0 3px rgba(158,167,162,.12),
+    0 0 8px rgba(186,195,190,.42);
+}
+
+.map-mission.open .map-mission-dot::after{
+  content:"";
+  position:absolute;
+  inset:-5px;
+  border:1px solid rgba(176,185,180,.52);
+  border-radius:50%;
+  animation:missionSignal 2.8s ease-out infinite;
+}
+
+.map-mission-label{
+  display:block;
+  margin-left:10px;
+  color:#aeb6b2;
+  font-size:6px;
+  font-weight:800;
+  letter-spacing:.8px;
+  text-shadow:0 1px 2px #000;
+}
+
+.map-mission-status{
+  display:block;
+  margin-left:10px;
+  margin-top:1px;
+  color:rgba(159,168,163,.68);
+  font-size:4.6px;
+  font-weight:700;
+  letter-spacing:.55px;
+  text-shadow:0 1px 2px #000;
+}
+
+.map-mission.completed .map-mission-dot{
+  background:#555b4c;
+  border-color:#7e856f;
+  box-shadow:none;
+}
+
+.map-mission.completed .map-mission-dot::before,
+.map-mission.completed .map-mission-dot::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:7px;
+  height:1px;
+  background:#a1a88e;
+  transform-origin:center;
+}
+
+.map-mission.completed .map-mission-dot::before{
+  transform:translate(-50%,-50%) rotate(45deg);
+}
+
+.map-mission.completed .map-mission-dot::after{
+  transform:translate(-50%,-50%) rotate(-45deg);
+  animation:none;
+}
+
+.map-mission.completed .map-mission-label{
+  color:#777e69;
+}
+
+.map-mission.completed .map-mission-status{
+  color:#656b5a;
+}
+
+@keyframes missionSignal{
+  0%{
+    opacity:.72;
+    transform:scale(.72);
+  }
+  70%{
+    opacity:0;
+    transform:scale(1.75);
+  }
+  100%{
+    opacity:0;
+    transform:scale(1.75);
+  }
+}
+
+</style> 
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-check-compat.js"></script>
+</head>
+
+<body> 
+  <div id="audioStartGate">
+  <button id="audioStartButton" type="button">
+    VERBINDUNG HERSTELLEN
+  </button>
+</div>
+  <div id="agentBoot">
+
+  <img
+    id="bootNorthwind"
+    class="bootAgent"
+    src="94C4F2C0-5381-44BE-B5BB-34EA0C965B95.png"
+    alt="">
+
+  <img
+    id="bootGreyfox"
+    class="bootAgent"
+    src="15BAEEE9-4A06-42FB-B81A-7F5D10334B04.png"
+    alt="">
+
+</div>
+<!-- =======================================================
+     CINEMATIC INTRO // REFERAT F
+     AUSSEN → FLUR → IDENTITÄT → BRIEFING
+     ======================================================= -->
+
+<div id="cinematicIntro">
+
+  <div class="introStage">
+
+
+    <!-- ===================================================
+         1 // AUSSENANSICHT
+         =================================================== -->
+
+    <div
+      id="introExterior"
+      class="introScene active">
+
+      <img
+        src="FBC53103-3641-4F21-8646-28CCFF2F05FE.png"
+        alt="Referat F Außenstelle">
+
+      <div
+        id="exteriorRing"
+        class="introRing">
+      </div>
+
+      <button
+        id="introExteriorHotspot"
+        class="introHotspot"
+        type="button"
+        aria-label="Zutritt erbitten">
+      </button>
+
+    </div>
+
+
+    <!-- ===================================================
+         2 // FLUR
+         =================================================== -->
+
+    <div
+      id="introCorridor"
+      class="introScene">
+
+      <img
+        src="594DD9EC-0381-42B0-9A25-DB042063760D.png"
+        alt="Referat F Korridor">
+
+      <div
+        id="corridorRing"
+        class="introRing">
+      </div>
+
+      <button
+        id="introCorridorHotspot"
+        class="introHotspot"
+        type="button"
+        aria-label="Identitätsprüfung starten">
+      </button>
+
+
+      <!-- Abdunklung hinter der Identitätsprüfung -->
+
+      <div id="introIdentityShade"></div>
+
+
+      <!-- ===============================================
+           IDENTITÄTSPRÜFUNG
+           bleibt optisch auf dem Flurbild
+           =============================================== -->
+
+      <div id="introIdentityGate">
+
+        <div class="gate-title">
+          IDENTITÄTSPRÜFUNG
+        </div>
+
+        <div class="question">
+          Welches Handyspiel spielen Thomas und Finja gemeinsam?
+        
+        </div>
+
+        <input
+          id="introAnswer"
+          type="text"
+          autocomplete="off"
+          autocapitalize="none"
+          spellcheck="false"
+          placeholder="Antwort eingeben">
+
+        <button
+          id="introCheckButton"
+          type="button">
+          ZUGANG PRÜFEN
+        </button>
+
+        <div id="introError">
+          IDENTITÄT NICHT BESTÄTIGT //
+          ERNEUTE PRÜFUNG ERFORDERLICH
+        </div>
+
+      </div>
+
+    </div>
+
+
+  <!-- ===================================================
+     3 // BRIEFING / Büro
+     =================================================== -->
+    
+    <div
+      id="introBriefing"
+      class="introScene">
+
+      <img
+        src="ADA88B20-ACBD-45BC-B258-5CF143FE6DF1.png"
+        alt="Northwind Greyfox Briefing">
+
+      <button
+        id="briefingContinue"
+        type="button">
+        ZUR ZENTRALE
+      </button>
+
+    </div>
+
+
+  </div>
+
+</div>
+<!-- =======================================================
+     START
+     ======================================================= -->
+
+<div id="mainScreen">
+
+  <div class="top-panel" id="topPanel">
+    <div class="kicker">ZENTRALSTELLE FÜR BESONDERE LAGEN</div>
+    <div class="agency">REFERAT F – BESONDERE ERMITTLUNGEN</div>
+    <div class="intro">
+      Eine neue Übertragung wurde registriert.
+      Identitätsprüfung erforderlich.
+      Unbefugter Zugriff wird selbstverständlich
+      mit strengem Stirnrunzeln geahndet.
+    </div>
+  </div>
+
+  <div id="gate">
+    <div class="gate-title">IDENTITY VERIFICATION</div>
+    <div class="question">
+      Welche Wesen wurden in der Berliner Außenstelle
+      zuletzt auf Kaffee eingestellt?
+    </div>
+
+    <input id="answer" type="text" autocomplete="off"
+      autocapitalize="none" spellcheck="false"
+      placeholder="Antwort eingeben">
+
+    <button id="checkButton">ZUGANG PRÜFEN</button>
+
+    <div id="error">
+      IDENTITÄT NICHT BESTÄTIGT //
+      ERNEUTE PRÜFUNG ERFORDERLICH
+    </div>
+  </div>
+
+  <div id="selection">
+
+    <div class="confirmed">
+      <div class="small">IDENTITÄT BESTÄTIGT</div>
+      <div class="big">REFERAT F // ZENTRALE</div>
+      <div class="central-code">
+        CHANNEL NW-GF/01 // AKTENZUGRIFF FREIGEGEBEN
+      </div>
+    </div>
+
+    <div class="cards">
+
+      <button class="agent-card" id="northwindCard">
+        <div class="transmission-badge" id="northwindBadge">
+          ● NEUE ÜBERTRAGUNG
+        </div>
+        <div class="agent-code">F-01</div>
+        <div class="agent-name">NORTHWIND</div>
+        <div class="agent-division">BERLIN DIVISION</div>
+      </button>
+
+      <button class="agent-card" id="greyfoxCard">
+        <div class="transmission-badge" id="greyfoxBadge">
+          ● NEUE ÜBERTRAGUNG
+        </div>
+        <div class="agent-code">TJ-01</div>
+        <div class="agent-name">GREYFOX</div>
+        <div class="agent-division">RHINELAND DIVISION</div>
+      </button>
+
+      <button class="archive-card" id="archiveCard">
+        <div class="agent-code">NW-GF/01</div>
+        <div class="agent-name">ÜBERTRAGUNGSARCHIV</div>
+        <div class="agent-division">GEMEINSAMER AKTENBESTAND</div>
+      </button>
+
+      <button class="archive-card" id="voiceCard">
+        <div id="voiceBadge">
+          ● NEUE SPRACHÜBERTRAGUNG
+        </div>
+        <div class="agent-code">NW-GF/02</div>
+        <div class="agent-name">SPRACHKANAL</div>
+        <div class="agent-division">GESICHERTE DIREKTÜBERTRAGUNG</div>
+      </button>
+
+    </div>
+
+    <button id="centralEndSession">SITZUNG BEENDEN</button>
+
+  </div>
+
+  <div class="footer">
+    FIKTIVE SONDERAKTE // INTERNER GEBRAUCH<br>
+    CHANNEL NW-GF/01 // CLEARANCE VS // NW-GF/7
+  </div>
+</div>
+
+
+<!-- =======================================================
+     SPRACHKANAL NW-GF/02
+     ======================================================= -->
+
+<div id="voiceScreen">
+
+  <div class="voiceStage">
+
+    <img
+      id="voiceBackground"
+      src="26B0C443-E84E-4784-86B7-3E6EB74B5B74.png"
+      alt="SPRACHKANAL NW-GF/02">
+<div id="voiceArchiveLabelOverlay">SPRACHÜBERTRAGUNGEN // ARCHIV</div>
+    <canvas id="voiceWaveCanvas"></canvas>
+
+    <div id="voiceNeedle"></div>
+<div id="voiceTimerCover"></div>
+    <div id="voiceTimerOverlay">00:00</div>
+
+    <div id="voiceStatusOverlay">
+      KANALSTATUS // BEREIT
+    </div>
+
+    <div id="voiceIdentityDisplay">
+      GERÄTESCHLÜSSEL // NICHT ZUGEORDNET
+    </div>
+
+    <div class="voiceLamp" id="voiceRecordLamp"></div>
+    <div class="voiceLamp" id="voiceReadyLamp"></div>
+    <div class="voiceLamp" id="voiceSendLamp"></div>
+
+    <button
+      id="voiceBack"
+      class="voiceHotspot"
+      aria-label="Zurück zur Zentrale">
+    </button>
+
+    <button
+      id="voiceRecord"
+      class="voiceHotspot"
+      aria-label="Aufnahme">
+    </button>
+
+    <button
+      id="voiceStop"
+      class="voiceHotspot"
+      aria-label="Stopp"
+      disabled>
+    </button>
+
+    <button
+      id="voicePlay"
+      class="voiceHotspot"
+      aria-label="Abhören"
+      disabled>
+    </button>
+
+    <button
+      id="voiceDelete"
+      class="voiceHotspot"
+      aria-label="Löschen"
+      disabled>
+    </button>
+
+    <button
+      id="voiceSend"
+      class="voiceHotspot"
+      aria-label="Übertragen"
+      disabled>
+    </button>
+
+    <button
+      id="voiceArchiveOpen"
+      class="voiceHotspot"
+      aria-label="Sprachübertragungen Archiv öffnen">
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     SPRACHKANAL // IDENTITÄT
+     ======================================================= -->
+
+<div id="voiceIdentityModal">
+
+  <div class="voiceIdentityBox">
+
+    <div class="voiceIdentityKicker">
+      NW-GF/02 // GERÄTESCHLÜSSEL
+    </div>
+
+    <div class="voiceIdentityTitle">
+      IDENTITÄT FÜR SPRACHKANAL FESTLEGEN
+    </div>
+
+    <div class="voiceIdentityText">
+      Diese Zuordnung wird auf diesem Gerät gespeichert.
+      Danach erkennt der Sprachkanal automatisch Absender
+      und Empfänger.
+    </div>
+
+    <button
+      class="voiceIdentityChoice"
+      id="voiceChooseNorthwind">
+      <strong>F-01 // NORTHWIND</strong>
+      <span>BERLIN DIVISION</span>
+    </button>
+
+    <button
+      class="voiceIdentityChoice"
+      id="voiceChooseGreyfox">
+      <strong>TJ-01 // GREYFOX</strong>
+      <span>RHINELAND DIVISION</span>
+    </button>
+
+    <button id="voiceIdentityCancel">
+      ABBRECHEN
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     SPRACHARCHIV
+     ======================================================= -->
+
+<div id="voiceArchiveScreen">
+
+  <div class="voiceArchivePaper">
+
+    <div class="voiceArchiveTitle">
+      SPRACHÜBERTRAGUNGEN // NW-GF/02
+    </div>
+
+    <div class="voiceArchiveSub">
+      GEMEINSAMER FUNKBESTAND // CHRONOLOGISCH
+    </div>
+
+    <div id="voiceArchiveList"></div>
+
+    <button id="voiceArchiveBack">
+      ← ZURÜCK ZUM SPRACHKANAL
+    </button>
+
+    <button id="voiceIdentityReset">
+      IDENTITÄT ZURÜCKSETZEN
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     F-7
+     ======================================================= -->
+
+<div id="securityLock">
+  <div class="security-box">
+    <div class="security-protocol">
+      SICHERHEITSPROTOKOLL F-7 AKTIVIERT
+    </div>
+    <div class="security-title">
+      UNAUTORISIERTER ZUGRIFF REGISTRIERT
+    </div>
+    <div class="security-dry">
+      Die zuständige Dienststelle wurde informiert.
+      Vermutlich.
+    </div>
+    <div id="securityCountdown">
+      SYSTEMSPERRE // 00:05
+    </div>
+  </div>
+</div>
+
+
+<!-- =======================================================
+     NORTHWIND
+     ======================================================= -->
+
+<div id="northwindViewer">
+
+  <div class="file-label">F-01 // NORTHWIND</div>
+
+  <button class="close-file" id="closeFile">
+    ZURÜCK ZUR ZENTRALE
+  </button>
+
+  <div id="dossierUnit">
+
+    <img id="folderImage" class="folder"
+      src="4AEB11EE-0F0C-4893-9580-A6D38261EDC3.png" alt="">
+
+    <div class="paperbox" id="paperBox">
+
+      <img id="paperImage" class="paper"
+        src="0009B8BC-706C-413F-81EC-90BCEDAAAA8F.png"
+        alt="NORTHWIND Dokument">
+
+    </div>
+  </div>
+
+  <div id="northwindTransmission" class="paper-transmission">
+
+    <div class="transmission-title" id="northwindTransmissionTitle">
+      ÜBERTRAGUNGSKANAL
+    </div>
+
+    <div class="transmission-route" id="northwindRoute">
+      F-01 // NORTHWIND
+    </div>
+
+    <div class="transmission-state" id="northwindState"></div>
+
+    <div id="northwindMessage" class="transmission-text"></div>
+
+    <button id="northwindReplyButton" class="transmission-button">
+      ANTWORTEN
+    </button>
+
+    <button id="northwindNewButton" class="transmission-button">
+      NEUE ÜBERTRAGUNG VERFASSEN
+    </button>
+
+    <button id="northwindArchiveButton"
+      class="transmission-button secondary">
+      INS ARCHIV
+    </button>
+
+    <div id="northwindCompose" class="compose-area">
+
+      <textarea id="northwindInput" class="transmission-input"
+        placeholder="Übertragung an TJ-01 eingeben"></textarea>
+
+      <button id="northwindSend" class="transmission-button">
+        SENDEN
+      </button>
+
+      <button id="northwindCancel" class="transmission-close">
+        ABBRECHEN
+      </button>
+
+    </div>
+
+    <div id="northwindStatus" class="transmission-status"></div>
+
+    <button id="northwindCloseTransmission" class="transmission-close">
+      ZURÜCK ZUR AKTE
+    </button>
+
+  </div>
+
+  <div class="page-indicator" id="pageIndicator">SEITE 1 / 4</div>
+</div>
+
+
+<!-- =======================================================
+     GREYFOX
+     ======================================================= -->
+
+<div id="greyfoxViewer">
+
+  <div class="file-label">TJ-01 // GREYFOX</div>
+
+  <button class="close-file" id="greyfoxCloseFile">
+    ZURÜCK ZUR ZENTRALE
+  </button>
+
+  <div id="greyfoxDossierUnit">
+
+    <img id="greyfoxFolderImage" class="folder"
+      src="4AEB11EE-0F0C-4893-9580-A6D38261EDC3.png" alt="">
+
+    <div class="paperbox" id="greyfoxPaperBox">
+
+      <img id="greyfoxPaperImage" class="paper"
+        src="EBD36AE0-7449-444F-9933-7DE66BB943F5.png"
+        alt="GREYFOX Dokument">
+
+    </div>
+  </div>
+
+  <div id="greyfoxTransmission" class="paper-transmission">
+
+    <div class="transmission-title" id="greyfoxTransmissionTitle">
+      ÜBERTRAGUNGSKANAL
+    </div>
+
+    <div class="transmission-route" id="greyfoxRoute">
+      TJ-01 // GREYFOX
+    </div>
+
+    <div class="transmission-state" id="greyfoxState"></div>
+
+    <div id="greyfoxMessage" class="transmission-text"></div>
+
+    <button id="greyfoxReplyButton" class="transmission-button">
+      ANTWORTEN
+    </button>
+
+    <button id="greyfoxNewButton" class="transmission-button">
+      NEUE ÜBERTRAGUNG VERFASSEN
+    </button>
+
+    <button id="greyfoxArchiveButton"
+      class="transmission-button secondary">
+      INS ARCHIV
+    </button>
+
+    <div id="greyfoxCompose" class="compose-area">
+
+      <textarea id="greyfoxInput" class="transmission-input"
+        placeholder="Übertragung an F-01 eingeben"></textarea>
+
+      <button id="greyfoxSend" class="transmission-button">
+        SENDEN
+      </button>
+
+      <button id="greyfoxCancel" class="transmission-close">
+        ABBRECHEN
+      </button>
+
+    </div>
+
+    <div id="greyfoxStatus" class="transmission-status"></div>
+
+    <button id="greyfoxCloseTransmission" class="transmission-close">
+      ZURÜCK ZUR AKTE
+    </button>
+
+  </div>
+
+  <div class="page-indicator" id="greyfoxPageIndicator">SEITE 1 / 4</div>
+</div>
+
+
+
+<!-- =======================================================
+     EINSATZKARTE // GEMEINSAME LAGE
+     ======================================================= -->
+
+<div id="missionMap" aria-hidden="true">
+  <div id="missionMapViewport">
+    <div id="missionMapWorld">
+      <img id="missionMapImage"
+        src="E999F597-59DC-4F48-A38D-638DC47EBAE1.png"
+        alt="NORTHWIND GREYFOX Einsatzkarte Deutschland">
+
+      <div id="missionOverlay" aria-hidden="true">
+        <div id="norddeichRecon" class="map-recon-zone"></div>
+
+        <div id="norddeichMission"
+          class="map-mission open"
+          data-state="open">
+          <span class="map-mission-dot"></span>
+          <span class="map-mission-label">NORDDEICH</span>
+          <span class="map-mission-status">EINSATZ OFFEN</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button id="missionMapBack" type="button">
+    ZURÜCK ZUR AKTE
+  </button>
+
+  <div id="missionMapHint">
+    KARTE VERSCHIEBEN // ZWEI FINGER ZUM ZOOMEN
+  </div>
+</div>
+
+<div id="missionBlink" aria-hidden="true"></div>
+
+<!-- =======================================================
+     LESEMODUS
+     ======================================================= -->
+
+<div id="reader">
+  <button id="readerClose">ZURÜCK ZUR AKTE</button>
+  <img id="readerImage" src="" alt="Dokument Lesemodus">
+  <button id="readerContinueHotspot"
+    type="button"
+    aria-label="Vorgang fortsetzen"></button>
+</div>
+
+
+<!-- =======================================================
+     ARCHIV
+     ======================================================= -->
+
+<div id="archiveScreen" class="closed">
+
+  <div class="archive-top">
+    REFERAT F // ÜBERTRAGUNGSARCHIV
+  </div>
+
+  <button id="archiveBack">
+    ZURÜCK ZUR ZENTRALE
+  </button>
+
+  <button id="drawerHotspot" aria-label="Archivschublade öffnen"></button>
+
+  <button id="archiveFilesHotspot"
+    aria-label="Aktenbestand öffnen">
+  </button>
+
+  <button id="drawerCloseHotspot"
+    aria-label="Archivschublade schließen">
+  </button>
+
+  <div class="archive-hint" id="archiveHint">
+    ARCHIVZUGRIFF // SCHUBLADE NW-GF/01 ANTIPPEN
+  </div>
+</div>
+
+
+<div id="archiveIndex">
+
+  <div class="archive-index-paper">
+
+    <div class="archive-index-title">
+      ÜBERTRAGUNGSARCHIV // NW-GF/01
+    </div>
+
+    <div class="archive-index-sub">
+      GEMEINSAMER AKTENBESTAND // CHRONOLOGISCH
+    </div>
+
+    <div id="archiveList"></div>
+
+    <button id="archiveIndexBack">
+      ZURÜCK ZUM AKTENSCHRANK
+    </button>
+
+  </div>
+
+</div>
+
+
+<div id="archiveDocument">
+
+  <div class="archive-document-paper">
+
+    <div id="archiveDocumentDate"></div>
+
+    <div id="archiveDocumentRoute"></div>
+
+    <div id="archiveDocumentText"></div>
+
+    <button id="archiveDocumentBack">
+      ZURÜCKLEGEN
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     SITZUNGSENDE
+     ======================================================= -->
+
+<div id="sessionEnd">
+
+  <div class="session-sequence">
+
+    <div class="session-kicker">
+      REFERAT F // SITZUNGSPROTOKOLL
+    </div>
+
+    <div id="sessionSequenceTitle">
+      SITZUNG WIRD BEENDET
+    </div>
+
+    <div id="sessionSequenceLine">
+      AKTENZUGRIFF WIRD GESCHLOSSEN …
+    </div>
+
+    <div class="terminal-bar" id="terminalBar"></div>
+
+  </div>
+
+</div>
+
+
+<div id="channelClosed">
+
+  <div>
+
+    <div class="closed-mark">△</div>
+
+    <div class="closed-title">
+      CHANNEL CLOSED
+    </div>
+
+    <div class="closed-code">
+      NW-GF/01 // SESSION TERMINATED
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================================
+   FIREBASE
+   ========================================================== */
+
+const DATABASE_URL=
+  "https://northwind-testlabor-default-rtdb.europe-west1.firebasedatabase.app";
+const APP_CHECK_SITE_KEY=
+  "6LeO2eMtAAAAAAbkhH9aK3gRXzXcad5hT0oM0H76";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDrT0WQvTo1DQnFJJYSd5Pr9NjCyufLTBo",
+  authDomain: "northwind-testlabor.firebaseapp.com",
+  databaseURL: DATABASE_URL,
+  projectId: "northwind-testlabor",
+  storageBucket: "northwind-testlabor.firebasestorage.app",
+  messagingSenderId: "198768740908",
+  appId: "1:198768740908:web:5d27d0c45ccf7344ebdf89"
+};
+  const firebaseApp = firebase.initializeApp(firebaseConfig);
+
+const appCheck = firebase.appCheck(firebaseApp);
+
+appCheck.activate(
+  new firebase.appCheck.ReCaptchaEnterpriseProvider(
+    APP_CHECK_SITE_KEY
+  ),
+  true
+);
+
+async function firebaseFetch(url, options = {}){
+  const tokenResult = await firebase.appCheck().getToken(false);
+
+  const headers = new Headers(options.headers || {});
+  headers.set("X-Firebase-AppCheck", tokenResult.token);
+
+  return fetch(url, {
+    ...options,
+    headers
+  });
+}
+const MESSAGE_URL=DATABASE_URL+"/currentTransmission.json";
+const ARCHIVE_URL=DATABASE_URL+"/archive";
+
+/* SPRACHKANAL */
+
+const VOICE_ARCHIVE_URL=
+  DATABASE_URL+"/voiceArchive";
+
+const VOICE_AUDIO_URL=
+  DATABASE_URL+"/voiceAudio";
+
+const VOICE_LATEST_URL=
+  DATABASE_URL+"/voiceLatest.json";
+
+
+let currentTransmission=null;
+let archiveCache=[];
+
+
+/* ==========================================================
+   TEXTÜBERTRAGUNG
+   ========================================================== */
+
+async function loadTransmission(){
+
+  try{
+
+    const response=await firebaseFetch(
+      MESSAGE_URL+"?t="+Date.now(),
+      {cache:"no-store"}
+    );
+
+    if(!response.ok){
+      throw new Error("Firebase nicht erreichbar");
+    }
+
+    currentTransmission=await response.json();
+
+    updateTransmissionDisplay();
+
+  }catch(err){
+
+    console.log("Übertragung konnte nicht geladen werden.",err);
+
+  }
+}
+
+
+async function saveTransmission(text,sender,recipient){
+
+  const transmission={
+    text,
+    sender,
+    recipient,
+    timestamp:Date.now()
+  };
+
+  const response=await firebaseFetch(
+    MESSAGE_URL,
+    {
+      method:"PUT",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(transmission)
+    }
+  );
+
+  if(!response.ok){
+    throw new Error("Übertragung fehlgeschlagen");
+  }
+
+  currentTransmission=transmission;
+
+  updateTransmissionDisplay();
+}
+
+
+async function storeInArchive(transmission){
+
+  if(!transmission || !transmission.text)return;
+
+  const archiveRecord={
+    text:transmission.text,
+    sender:transmission.sender,
+    recipient:transmission.recipient,
+    timestamp:transmission.timestamp || Date.now(),
+    archivedAt:Date.now()
+  };
+
+  const response=await firebaseFetch(
+    ARCHIVE_URL+".json",
+    {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(archiveRecord)
+    }
+  );
+
+  if(!response.ok){
+    throw new Error("Archivierung fehlgeschlagen");
+  }
+}
+
+
+async function deleteCurrentTransmission(){
+
+  const response=await firebaseFetch(
+    MESSAGE_URL,
+    {method:"DELETE"}
+  );
+
+  if(!response.ok){
+    throw new Error(
+      "Aktuelle Übertragung konnte nicht entfernt werden"
+    );
+  }
+
+  currentTransmission=null;
+
+  updateTransmissionDisplay();
+}
+
+
+async function archiveCurrent(){
+
+  if(!currentTransmission)return;
+
+  const copy={...currentTransmission};
+
+  await storeInArchive(copy);
+
+  await deleteCurrentTransmission();
+}
+
+
+async function archiveAndReply(text,sender,recipient){
+
+  if(currentTransmission){
+
+    await storeInArchive({
+      ...currentTransmission
+    });
+
+  }
+
+  await saveTransmission(
+    text,
+    sender,
+    recipient
+  );
+}
+
+
+async function loadArchive(){
+
+  const response=await firebaseFetch(
+    ARCHIVE_URL+".json?t="+Date.now(),
+    {cache:"no-store"}
+  );
+
+  if(!response.ok){
+    throw new Error("Archiv nicht erreichbar");
+  }
+
+  const data=await response.json();
+
+  archiveCache=[];
+
+  if(data){
+
+    archiveCache=
+      Object.entries(data).map(
+        ([id,item])=>({
+          id,
+          ...item
+        })
+      );
+
+    archiveCache.sort(
+      (a,b)=>
+        (b.timestamp||0)-
+        (a.timestamp||0)
+    );
+  }
+
+  renderArchiveList();
+}
+
+
+/* ==========================================================
+   AUDIO – BEWÄHRTE VERSION
+   ========================================================== */
+
+let audioCtx=null;
+
+async function ensureAudio(){
+
+  const AudioContext=
+    window.AudioContext||
+    window.webkitAudioContext;
+
+  if(!AudioContext)return false;
+
+  if(!audioCtx){
+
+    audioCtx=
+      new AudioContext();
+
+  }
+
+  if(audioCtx.state==="suspended"){
+
+    try{
+
+      await audioCtx.resume();
+
+    }catch(e){}
+
+  }
+
+  return audioCtx.state==="running";
+}
+
+
+function keyClick(){
+
+  if(
+    !audioCtx ||
+    audioCtx.state!=="running"
+  )return;
+
+  const now=
+    audioCtx.currentTime;
+
+  const osc=
+    audioCtx.createOscillator();
+
+  const gain=
+    audioCtx.createGain();
+
+  osc.type="square";
+
+  osc.frequency.setValueAtTime(
+    850,
+    now
+  );
+
+  osc.frequency.exponentialRampToValueAtTime(
+    500,
+    now+.03
+  );
+
+  gain.gain.setValueAtTime(
+    .055,
+    now
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    .001,
+    now+.03
+  );
+
+  osc.connect(gain);
+
+  gain.connect(
+    audioCtx.destination
+  );
+
+  osc.start(now);
+
+  osc.stop(now+.03);
+}
+
+
+function buttonClick(){
+
+  if(
+    !audioCtx ||
+    audioCtx.state!=="running"
+  )return;
+
+  const now=
+    audioCtx.currentTime;
+
+  const osc=
+    audioCtx.createOscillator();
+
+  const gain=
+    audioCtx.createGain();
+
+  osc.type="square";
+
+  osc.frequency.setValueAtTime(
+    230,
+    now
+  );
+
+  osc.frequency.exponentialRampToValueAtTime(
+    120,
+    now+.075
+  );
+
+  gain.gain.setValueAtTime(
+    .09,
+    now
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    .001,
+    now+.075
+  );
+
+  osc.connect(gain);
+
+  gain.connect(
+    audioCtx.destination
+  );
+
+  osc.start(now);
+
+  osc.stop(now+.075);
+}
+
+
+function grantedSound(){
+
+  if(
+    !audioCtx ||
+    audioCtx.state!=="running"
+  )return;
+
+  const now=
+    audioCtx.currentTime;
+
+  [520,780].forEach(
+    (freq,i)=>{
+
+      const osc=
+        audioCtx.createOscillator();
+
+      const gain=
+        audioCtx.createGain();
+
+      osc.type="sine";
+
+      osc.frequency.value=
+        freq;
+
+      const start=
+        now+(i*.11);
+
+      gain.gain.setValueAtTime(
+        .001,
+        start
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        .075,
+        start+.015
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        .001,
+        start+.16
+      );
+
+      osc.connect(gain);
+
+      gain.connect(
+        audioCtx.destination
+      );
+
+      osc.start(start);
+
+      osc.stop(start+.17);
+    }
+  );
+}
+
+
+function pageSound(){
+
+  if(
+    !audioCtx ||
+    audioCtx.state!=="running"
+  )return;
+
+  const duration=.24;
+
+  const rate=
+    audioCtx.sampleRate;
+
+  const buffer=
+    audioCtx.createBuffer(
+      1,
+      Math.floor(rate*duration),
+      rate
+    );
+
+  const data=
+    buffer.getChannelData(0);
+
+  for(
+    let i=0;
+    i<data.length;
+    i++
+  ){
+
+    const t=
+      i/data.length;
+
+    const envelope=
+      Math.sin(
+        Math.PI*t
+      );
+
+    data[i]=
+      (Math.random()*2-1)*
+      envelope*
+      .5;
+  }
+
+  const source=
+    audioCtx.createBufferSource();
+
+  source.buffer=
+    buffer;
+
+  const filter=
+    audioCtx.createBiquadFilter();
+
+  filter.type=
+    "bandpass";
+
+  filter.frequency.value=
+    1500;
+
+  filter.Q.value=
+    .55;
+
+  const gain=
+    audioCtx.createGain();
+
+  gain.gain.value=
+    .15;
+
+  source.connect(
+    filter
+  );
+
+  filter.connect(
+    gain
+  );
+
+  gain.connect(
+    audioCtx.destination
+  );
+
+  source.start();
+}
+
+
+function lockedSound(){
+
+  if(
+    !audioCtx ||
+    audioCtx.state!=="running"
+  )return;
+
+  const now=
+    audioCtx.currentTime;
+
+  const osc=
+    audioCtx.createOscillator();
+
+  const gain=
+    audioCtx.createGain();
+
+  osc.type=
+    "sawtooth";
+
+  osc.frequency.setValueAtTime(
+    125,
+    now
+  );
+
+  osc.frequency.exponentialRampToValueAtTime(
+    65,
+    now+.17
+  );
+
+  gain.gain.setValueAtTime(
+    .12,
+    now
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    .001,
+    now+.17
+  );
+
+  osc.connect(gain);
+
+  gain.connect(
+    audioCtx.destination
+  );
+
+  osc.start(now);
+
+  osc.stop(now+.17);
+}
+
+
+function securityAlarmSound(){
+
+  if(
+    !audioCtx ||
+    audioCtx.state!=="running"
+  )return;
+
+  const now=
+    audioCtx.currentTime;
+
+  [0,.34].forEach(
+    delay=>{
+
+      const osc=
+        audioCtx.createOscillator();
+
+      const gain=
+        audioCtx.createGain();
+
+      osc.type=
+        "sawtooth";
+
+      osc.frequency.setValueAtTime(
+        145,
+        now+delay
+      );
+
+      osc.frequency.exponentialRampToValueAtTime(
+        92,
+        now+delay+.22
+      );
+
+      gain.gain.setValueAtTime(
+        .001,
+        now+delay
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        .11,
+        now+delay+.025
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        .001,
+        now+delay+.24
+      );
+
+      osc.connect(gain);
+
+      gain.connect(
+        audioCtx.destination
+      );
+
+      osc.start(
+        now+delay
+      );
+
+      osc.stop(
+        now+delay+.25
+      );
+    }
+  );
+}
+
+
+/* ==========================================================
+   SPRACHKANAL // FUNKRAUSCHEN
+   ========================================================== */
+
+function voiceRadioNoise(
+  duration=1.15
+){
+
+  if(
+    !audioCtx ||
+    audioCtx.state!=="running"
+  )return;
+
+  const rate=
+    audioCtx.sampleRate;
+
+  const buffer=
+    audioCtx.createBuffer(
+      1,
+      Math.floor(
+        rate*duration
+      ),
+      rate
+    );
+
+  const data=
+    buffer.getChannelData(0);
+
+  for(
+    let i=0;
+    i<data.length;
+    i++
+  ){
+
+    const fade=
+      Math.sin(
+        Math.PI*
+        i/data.length
+      );
+
+    data[i]=
+      (Math.random()*2-1)*
+      fade*
+      .22;
+  }
+
+  const source=
+    audioCtx.createBufferSource();
+
+  const filter=
+    audioCtx.createBiquadFilter();
+
+  const gain=
+    audioCtx.createGain();
+
+  source.buffer=
+    buffer;
+
+  filter.type=
+    "bandpass";
+
+  filter.frequency.value=
+    1800;
+
+  filter.Q.value=
+    .8;
+
+  gain.gain.value=
+    .11;
+
+  source.connect(
+    filter
+  );
+
+  filter.connect(
+    gain
+  );
+
+  gain.connect(
+    audioCtx.destination
+  );
+
+  source.start();
+}
+
+
+/* ==========================================================
+   ELEMENTE
+   ========================================================== */
+
+const gate=
+  document.getElementById(
+    "gate"
+  );
+
+const selection=
+  document.getElementById(
+    "selection"
+  );
+
+const topPanel=
+  document.getElementById(
+    "topPanel"
+  );
+
+const answer=
+  document.getElementById(
+    "answer"
+  );
+
+const checkButton=
+  document.getElementById(
+    "checkButton"
+  );
+
+const error=
+  document.getElementById(
+    "error"
+  );
+
+
+const northwindCard=
+  document.getElementById(
+    "northwindCard"
+  );
+
+const greyfoxCard=
+  document.getElementById(
+    "greyfoxCard"
+  );
+
+const archiveCard=
+  document.getElementById(
+    "archiveCard"
+  );
+
+
+const northwindBadge=
+  document.getElementById(
+    "northwindBadge"
+  );
+
+const greyfoxBadge=
+  document.getElementById(
+    "greyfoxBadge"
+  );
+
+
+const securityLock=
+  document.getElementById(
+    "securityLock"
+  );
+
+const securityCountdown=
+  document.getElementById(
+    "securityCountdown"
+  );
+
+
+let failedAttempts=0;
+
+let securityTimer=null;
+
+
+/* NORTHWIND */
+
+const northwindViewer=
+  document.getElementById(
+    "northwindViewer"
+  );
+
+const closeFile=
+  document.getElementById(
+    "closeFile"
+  );
+
+const dossierUnit=
+  document.getElementById(
+    "dossierUnit"
+  );
+
+const folderImage=
+  document.getElementById(
+    "folderImage"
+  );
+
+const paperBox=
+  document.getElementById(
+    "paperBox"
+  );
+
+const paperImage=
+  document.getElementById(
+    "paperImage"
+  );
+
+const pageIndicator=
+  document.getElementById(
+    "pageIndicator"
+  );
+
+
+const northwindTransmission=
+  document.getElementById(
+    "northwindTransmission"
+  );
+
+const northwindTransmissionTitle=
+  document.getElementById(
+    "northwindTransmissionTitle"
+  );
+
+const northwindRoute=
+  document.getElementById(
+    "northwindRoute"
+  );
+
+const northwindState=
+  document.getElementById(
+    "northwindState"
+  );
+
+const northwindMessage=
+  document.getElementById(
+    "northwindMessage"
+  );
+
+const northwindReplyButton=
+  document.getElementById(
+    "northwindReplyButton"
+  );
+
+const northwindNewButton=
+  document.getElementById(
+    "northwindNewButton"
+  );
+
+const northwindArchiveButton=
+  document.getElementById(
+    "northwindArchiveButton"
+  );
+
+const northwindCompose=
+  document.getElementById(
+    "northwindCompose"
+  );
+
+const northwindInput=
+  document.getElementById(
+    "northwindInput"
+  );
+
+const northwindSend=
+  document.getElementById(
+    "northwindSend"
+  );
+
+const northwindCancel=
+  document.getElementById(
+    "northwindCancel"
+  );
+
+const northwindStatus=
+  document.getElementById(
+    "northwindStatus"
+  );
+
+const northwindCloseTransmission=
+  document.getElementById(
+    "northwindCloseTransmission"
+  );
+
+
+/* GREYFOX */
+
+const greyfoxViewer=
+  document.getElementById(
+    "greyfoxViewer"
+  );
+
+const greyfoxCloseFile=
+  document.getElementById(
+    "greyfoxCloseFile"
+  );
+
+const greyfoxDossierUnit=
+  document.getElementById(
+    "greyfoxDossierUnit"
+  );
+
+const greyfoxFolderImage=
+  document.getElementById(
+    "greyfoxFolderImage"
+  );
+
+const greyfoxPaperBox=
+  document.getElementById(
+    "greyfoxPaperBox"
+  );
+
+const greyfoxPaperImage=
+  document.getElementById(
+    "greyfoxPaperImage"
+  );
+
+const greyfoxPageIndicator=
+  document.getElementById(
+    "greyfoxPageIndicator"
+  );
+
+const greyfoxTransmission=
+  document.getElementById(
+    "greyfoxTransmission"
+  );
+
+const greyfoxTransmissionTitle=
+  document.getElementById(
+    "greyfoxTransmissionTitle"
+  );
+
+const greyfoxRoute=
+  document.getElementById(
+    "greyfoxRoute"
+  );
+
+const greyfoxState=
+  document.getElementById(
+    "greyfoxState"
+  );
+
+const greyfoxMessage=
+  document.getElementById(
+    "greyfoxMessage"
+  );
+
+const greyfoxReplyButton=
+  document.getElementById(
+    "greyfoxReplyButton"
+  );
+
+const greyfoxNewButton=
+  document.getElementById(
+    "greyfoxNewButton"
+  );
+
+const greyfoxArchiveButton=
+  document.getElementById(
+    "greyfoxArchiveButton"
+  );
+
+const greyfoxCompose=
+  document.getElementById(
+    "greyfoxCompose"
+  );
+
+const greyfoxInput=
+  document.getElementById(
+    "greyfoxInput"
+  );
+
+const greyfoxSend=
+  document.getElementById(
+    "greyfoxSend"
+  );
+
+const greyfoxCancel=
+  document.getElementById(
+    "greyfoxCancel"
+  );
+
+const greyfoxStatus=
+  document.getElementById(
+    "greyfoxStatus"
+  );
+
+const greyfoxCloseTransmission=
+  document.getElementById(
+    "greyfoxCloseTransmission"
+  );
+
+
+/* READER */
+
+const reader=
+  document.getElementById(
+    "reader"
+  );
+
+const readerImage=
+  document.getElementById(
+    "readerImage"
+  );
+
+const readerClose=
+  document.getElementById(
+    "readerClose"
+  );
+
+
+/* ARCHIV */
+
+const archiveScreen=
+  document.getElementById(
+    "archiveScreen"
+  );
+
+const archiveBack=
+  document.getElementById(
+    "archiveBack"
+  );
+
+const drawerHotspot=
+  document.getElementById(
+    "drawerHotspot"
+  );
+
+const archiveFilesHotspot=
+  document.getElementById(
+    "archiveFilesHotspot"
+  );
+
+const drawerCloseHotspot=
+  document.getElementById(
+    "drawerCloseHotspot"
+  );
+
+const archiveHint=
+  document.getElementById(
+    "archiveHint"
+  );
+
+
+const archiveIndex=
+  document.getElementById(
+    "archiveIndex"
+  );
+
+const archiveList=
+  document.getElementById(
+    "archiveList"
+  );
+
+const archiveIndexBack=
+  document.getElementById(
+    "archiveIndexBack"
+  );
+
+
+const archiveDocument=
+  document.getElementById(
+    "archiveDocument"
+  );
+
+const archiveDocumentDate=
+  document.getElementById(
+    "archiveDocumentDate"
+  );
+
+const archiveDocumentRoute=
+  document.getElementById(
+    "archiveDocumentRoute"
+  );
+
+const archiveDocumentText=
+  document.getElementById(
+    "archiveDocumentText"
+  );
+
+const archiveDocumentBack=
+  document.getElementById(
+    "archiveDocumentBack"
+  );
+
+
+/* SPRACHKANAL */
+
+const voiceCard=
+  document.getElementById(
+    "voiceCard"
+  );
+
+const voiceBadge=
+  document.getElementById(
+    "voiceBadge"
+  );
+
+const voiceScreen=
+  document.getElementById(
+    "voiceScreen"
+  );
+
+const voiceBack=
+  document.getElementById(
+    "voiceBack"
+  );
+
+const voiceRecord=
+  document.getElementById(
+    "voiceRecord"
+  );
+
+const voiceStop=
+  document.getElementById(
+    "voiceStop"
+  );
+
+const voicePlay=
+  document.getElementById(
+    "voicePlay"
+  );
+
+const voiceDelete=
+  document.getElementById(
+    "voiceDelete"
+  );
+
+const voiceSend=
+  document.getElementById(
+    "voiceSend"
+  );
+
+const voiceArchiveOpen=
+  document.getElementById(
+    "voiceArchiveOpen"
+  );
+
+const voiceWaveCanvas=
+  document.getElementById(
+    "voiceWaveCanvas"
+  );
+
+const voiceNeedle=
+  document.getElementById(
+    "voiceNeedle"
+  );
+
+const voiceTimerOverlay=
+  document.getElementById(
+    "voiceTimerOverlay"
+  );
+
+const voiceStatusOverlay=
+  document.getElementById(
+    "voiceStatusOverlay"
+  );
+
+const voiceIdentityDisplay=
+  document.getElementById(
+    "voiceIdentityDisplay"
+  );
+
+const voiceRecordLamp=
+  document.getElementById(
+    "voiceRecordLamp"
+  );
+
+const voiceReadyLamp=
+  document.getElementById(
+    "voiceReadyLamp"
+  );
+
+const voiceSendLamp=
+  document.getElementById(
+    "voiceSendLamp"
+  );
+
+const voiceIdentityModal=
+  document.getElementById(
+    "voiceIdentityModal"
+  );
+
+const voiceChooseNorthwind=
+  document.getElementById(
+    "voiceChooseNorthwind"
+  );
+
+const voiceChooseGreyfox=
+  document.getElementById(
+    "voiceChooseGreyfox"
+  );
+
+const voiceIdentityCancel=
+  document.getElementById(
+    "voiceIdentityCancel"
+  );
+
+const voiceArchiveScreen=
+  document.getElementById(
+    "voiceArchiveScreen"
+  );
+
+const voiceArchiveList=
+  document.getElementById(
+    "voiceArchiveList"
+  );
+
+const voiceArchiveBack=
+  document.getElementById(
+    "voiceArchiveBack"
+  );
+
+const voiceIdentityReset=
+  document.getElementById(
+    "voiceIdentityReset"
+  );
+
+
+/* SITZUNG */
+
+const centralEndSession=
+  document.getElementById(
+    "centralEndSession"
+  );
+
+const sessionEnd=
+  document.getElementById(
+    "sessionEnd"
+  );
+
+const sessionSequenceTitle=
+  document.getElementById(
+    "sessionSequenceTitle"
+  );
+
+const sessionSequenceLine=
+  document.getElementById(
+    "sessionSequenceLine"
+  );
+
+const terminalBar=
+  document.getElementById(
+    "terminalBar"
+  );
+
+const channelClosed=
+  document.getElementById(
+    "channelClosed"
+  );
+
+
+/* ==========================================================
+   SEITEN
+   ========================================================== */
+
+const pages=[
+  "0009B8BC-706C-413F-81EC-90BCEDAAAA8F.png",
+  "728EE74F-078F-40C9-A363-05238EAAFCDB.png",
+  "CFB497BF-B1ED-4D66-87B3-EA1BC446E78F.png",
+  "FB761407-4C83-4BF3-B985-580C2A48075F.png"
+];
+
+const greyfoxPages=[
+  "EBD36AE0-7449-444F-9933-7DE66BB943F5.png",
+  "8353B741-2D29-46C7-9323-B59D82AD7B5B.png",
+  "6C6AEFC4-8F3A-40AB-992E-48B198968C95.png",
+  "FCFA7839-01C7-4E38-B419-878EE64ED189.png"
+];
+
+const folderPage1=
+  "4AEB11EE-0F0C-4893-9580-A6D38261EDC3.png";
+
+const folderTurned=
+  "CECEA182-A38A-46B1-B428-9AFDE31DA90F.png";
+
+let currentPage=0;
+
+let greyfoxCurrentPage=0;
+
+let northwindTransmissionHidden=false;
+
+let greyfoxTransmissionHidden=false;
+
+
+/* ==========================================================
+   AUDIO ENTSPERREN
+   ========================================================== */
+
+document.addEventListener(
+  "touchstart",
+  ()=>{
+    ensureAudio();
+  },
+  {passive:true}
+);
+
+document.addEventListener(
+  "pointerdown",
+  ()=>{
+    ensureAudio();
+  },
+  {passive:true}
+);
+
+
+/* ==========================================================
+   LOGIN
+   ========================================================== */
+
+answer.addEventListener(
+  "focus",
+  async()=>{
+    await ensureAudio();
+  }
+);
+
+answer.addEventListener(
+  "input",
+  async()=>{
+
+    await ensureAudio();
+
+    keyClick();
+  }
+);
+
+answer.addEventListener(
+  "keydown",
+  e=>{
+
+    if(e.key==="Enter"){
+      checkAnswer();
+    }
+  }
+);
+
+checkButton.addEventListener(
+  "touchstart",
+  ()=>{
+    ensureAudio();
+  },
+  {passive:true}
+);
+
+checkButton.addEventListener(
+  "click",
+  checkAnswer
+);
+
+
+async function checkAnswer(){
+
+  if(answer.disabled)return;
+
+  await ensureAudio();
+
+  buttonClick();
+
+  const value=
+    answer.value
+      .trim()
+      .toLocaleLowerCase(
+        "de-DE"
+      );
+
+  if(value==="drachen"){
+
+    failedAttempts=0;
+
+    error.style.display=
+      "none";
+
+    setTimeout(
+      ()=>{
+        grantedSound();
+      },
+      90
+    );
+
+    gate.style.display=
+      "none";
+
+    topPanel.style.display=
+      "none";
+
+    selection.style.display=
+      "block";
+
+    await loadTransmission();
+
+    await checkVoiceBadge();
+
+  }else{
+
+    failedAttempts++;
+
+    if(failedAttempts===1){
+
+      error.innerHTML=
+        "<strong>ZUGRIFF VERWEIGERT</strong><br>"+
+        "IDENTITÄT NICHT BESTÄTIGT";
+
+      error.style.display=
+        "block";
+
+    }else if(
+      failedAttempts===2
+    ){
+
+      error.innerHTML=
+        "<strong>WARNUNG</strong><br>"+
+        "ZWEITER FEHLVERSUCH REGISTRIERT";
+
+      error.style.display=
+        "block";
+
+    }else{
+
+      activateSecurityProtocol();
+
+    }
+  }
+}
+
+
+/* ==========================================================
+   F-7
+   ========================================================== */
+
+async function activateSecurityProtocol(){
+
+  await ensureAudio();
+
+  failedAttempts=0;
+
+  error.style.display=
+    "none";
+
+  answer.disabled=
+    true;
+
+  checkButton.disabled=
+    true;
+
+  securityCountdown.textContent=
+    "SYSTEMSPERRE // 00:05";
+
+  securityLock.classList.add(
+    "active",
+    "alarm-flash"
+  );
+
+  securityAlarmSound();
+
+  let seconds=5;
+
+  clearInterval(
+    securityTimer
+  );
+
+  securityTimer=
+    setInterval(
+      ()=>{
+
+        seconds--;
+
+        securityCountdown.textContent=
+          "SYSTEMSPERRE // 00:0"+
+          Math.max(
+            seconds,
+            0
+          );
+
+        if(seconds<=0){
+
+          clearInterval(
+            securityTimer
+          );
+
+          securityLock.classList.remove(
+            "active",
+            "alarm-flash"
+          );
+
+          answer.disabled=
+            false;
+
+          checkButton.disabled=
+            false;
+
+          answer.value="";
+
+          error.innerHTML=
+            "IDENTITÄT NICHT BESTÄTIGT // "+
+            "ERNEUTE PRÜFUNG ERFORDERLICH";
+
+          answer.focus();
+        }
+
+      },
+      1000
+    );
+}
+
+
+/* ==========================================================
+   ZENTRALE / BADGES
+   ========================================================== */
+
+function showCentral(){
+
+  closeReader();
+
+  northwindViewer.style.display=
+    "none";
+
+  greyfoxViewer.style.display=
+    "none";
+
+  archiveScreen.style.display=
+    "none";
+
+  voiceScreen.style.display=
+    "none";
+
+  voiceArchiveScreen.classList.remove(
+    "active"
+  );
+
+  voiceIdentityModal.classList.remove(
+    "active"
+  );
+
+  archiveIndex.classList.remove(
+    "active"
+  );
+
+  archiveDocument.classList.remove(
+    "active"
+  );
+
+  selection.style.display=
+    "block";
+
+  loadTransmission();
+
+  checkVoiceBadge();
+}
+
+
+function updateTransmissionDisplay(){
+
+  northwindBadge.style.display=
+    "none";
+
+  greyfoxBadge.style.display=
+    "none";
+
+  if(
+    currentTransmission &&
+    currentTransmission.text
+  ){
+
+    if(
+      isRecipient(
+        currentTransmission,
+        "F-01"
+      )
+    ){
+
+      northwindBadge.style.display=
+        "block";
+    }
+
+    if(
+      isRecipient(
+        currentTransmission,
+        "TJ-01"
+      )
+    ){
+
+      greyfoxBadge.style.display=
+        "block";
+    }
+  }
+
+  renderAgentTransmission(
+    "F-01"
+  );
+
+  renderAgentTransmission(
+    "TJ-01"
+  );
+}
+
+
+function isRecipient(
+  item,
+  code
+){
+
+  return !!(
+    item &&
+    item.recipient &&
+    item.recipient.indexOf(
+      code
+    )!==-1
+  );
+}
+
+
+function isSender(
+  item,
+  code
+){
+
+  return !!(
+    item &&
+    item.sender &&
+    item.sender.indexOf(
+      code
+    )!==-1
+  );
+}
+
+
+/* ==========================================================
+   FUNKANZEIGE
+   ========================================================== */
+
+function renderAgentTransmission(agent){
+
+  const isNorth=
+    agent==="F-01";
+
+  const title=
+    isNorth
+      ? northwindTransmissionTitle
+      : greyfoxTransmissionTitle;
+
+  const route=
+    isNorth
+      ? northwindRoute
+      : greyfoxRoute;
+
+  const state=
+    isNorth
+      ? northwindState
+      : greyfoxState;
+
+  const message=
+    isNorth
+      ? northwindMessage
+      : greyfoxMessage;
+
+  const reply=
+    isNorth
+      ? northwindReplyButton
+      : greyfoxReplyButton;
+
+  const newButton=
+    isNorth
+      ? northwindNewButton
+      : greyfoxNewButton;
+
+  const archiveButton=
+    isNorth
+      ? northwindArchiveButton
+      : greyfoxArchiveButton;
+
+  const compose=
+    isNorth
+      ? northwindCompose
+      : greyfoxCompose;
+
+  const status=
+    isNorth
+      ? northwindStatus
+      : greyfoxStatus;
+
+  compose.style.display=
+    "none";
+
+  status.textContent="";
+
+  if(
+    !currentTransmission ||
+    !currentTransmission.text
+  ){
+
+    title.textContent=
+      "ÜBERTRAGUNGSKANAL";
+
+    route.textContent=
+      isNorth
+        ? "F-01 // NORTHWIND"
+        : "TJ-01 // GREYFOX";
+
+    state.textContent=
+      "KEINE NEUE ÜBERTRAGUNG";
+
+    message.textContent=
+      "Der Kanal ist derzeit frei.";
+
+    reply.style.display=
+      "none";
+
+    archiveButton.style.display=
+      "none";
+
+    newButton.style.display=
+      "block";
+
+    return;
+  }
+
+  if(
+    isRecipient(
+      currentTransmission,
+      agent
+    )
+  ){
+
+    title.textContent=
+      "EINGEGANGENE ÜBERTRAGUNG";
+
+    route.textContent=
+      currentTransmission.sender+
+      " → "+
+      currentTransmission.recipient;
+
+    state.textContent=
+      "STATUS // NEU";
+
+    message.textContent=
+      currentTransmission.text;
+
+    reply.style.display=
+      "block";
+
+    archiveButton.style.display=
+      "block";
+
+    newButton.style.display=
+      "none";
+
+    return;
+  }
+
+  if(
+    isSender(
+      currentTransmission,
+      agent
+    )
+  ){
+
+    title.textContent=
+      "AUSGEHENDE ÜBERTRAGUNG";
+
+    route.textContent=
+      currentTransmission.sender+
+      " → "+
+      currentTransmission.recipient;
+
+    state.textContent=
+      "ÜBERTRAGUNG GESENDET // ANTWORT AUSSTEHEND";
+
+    message.textContent=
+      currentTransmission.text;
+
+    reply.style.display=
+      "none";
+
+    archiveButton.style.display=
+      "none";
+
+    newButton.style.display=
+      "none";
+
+    return;
+  }
+
+  state.textContent=
+    "KANAL BELEGT";
+
+  message.textContent="";
+
+  reply.style.display=
+    "none";
+
+  archiveButton.style.display=
+    "none";
+
+  newButton.style.display=
+    "none";
+}
+
+
+/* ==========================================================
+   FUNKAKTIONEN
+   ========================================================== */
+
+function beginCompose(
+  agent,
+  isReply
+){
+
+  const isNorth=
+    agent==="F-01";
+
+  const compose=
+    isNorth
+      ? northwindCompose
+      : greyfoxCompose;
+
+  const input=
+    isNorth
+      ? northwindInput
+      : greyfoxInput;
+
+  const reply=
+    isNorth
+      ? northwindReplyButton
+      : greyfoxReplyButton;
+
+  const newButton=
+    isNorth
+      ? northwindNewButton
+      : greyfoxNewButton;
+
+  const archiveButton=
+    isNorth
+      ? northwindArchiveButton
+      : greyfoxArchiveButton;
+
+  compose.dataset.reply=
+    isReply
+      ? "yes"
+      : "no";
+
+  compose.style.display=
+    "block";
+
+  reply.style.display=
+    "none";
+
+  newButton.style.display=
+    "none";
+
+  archiveButton.style.display=
+    "none";
+
+  input.value="";
+
+  input.focus();
+}
+
+
+function cancelCompose(agent){
+
+  const isNorth=
+    agent==="F-01";
+
+  const compose=
+    isNorth
+      ? northwindCompose
+      : greyfoxCompose;
+
+  const input=
+    isNorth
+      ? northwindInput
+      : greyfoxInput;
+
+  compose.style.display=
+    "none";
+
+  input.value="";
+
+  renderAgentTransmission(
+    agent
+  );
+}
+
+
+async function sendFromAgent(agent){
+
+  const isNorth=
+    agent==="F-01";
+
+  const input=
+    isNorth
+      ? northwindInput
+      : greyfoxInput;
+
+  const sendButton=
+    isNorth
+      ? northwindSend
+      : greyfoxSend;
+
+  const status=
+    isNorth
+      ? northwindStatus
+      : greyfoxStatus;
+
+  const compose=
+    isNorth
+      ? northwindCompose
+      : greyfoxCompose;
+
+  const text=
+    input.value.trim();
+
+  if(!text){
+
+    status.textContent=
+      "KEINE ÜBERTRAGUNG EINGEGEBEN.";
+
+    return;
+  }
+
+  const sender=
+    isNorth
+      ? "F-01 // NORTHWIND"
+      : "TJ-01 // GREYFOX";
+
+  const recipient=
+    isNorth
+      ? "TJ-01 // GREYFOX"
+      : "F-01 // NORTHWIND";
+
+  const replying=
+    compose.dataset.reply===
+    "yes";
+
+  sendButton.disabled=
+    true;
+
+  status.textContent=
+    "ÜBERTRAGUNG LÄUFT...";
+
+  try{
+
+    if(
+      replying &&
+      currentTransmission
+    ){
+
+      await archiveAndReply(
+        text,
+        sender,
+        recipient
+      );
+
+    }else{
+
+      if(currentTransmission){
+
+        throw new Error(
+          "Kanal belegt"
+        );
+      }
+
+      await saveTransmission(
+        text,
+        sender,
+        recipient
+      );
+    }
+
+    input.value="";
+
+    compose.style.display=
+      "none";
+
+    status.textContent=
+      "ÜBERTRAGUNG FREIGEGEBEN.";
+
+    grantedSound();
+
+    renderAgentTransmission(
+      agent
+    );
+
+  }catch(err){
+
+    status.textContent=
+      "ÜBERTRAGUNG FEHLGESCHLAGEN.";
+
+  }finally{
+
+    sendButton.disabled=
+      false;
+  }
+}
+
+
+async function archiveFromAgent(agent){
+
+  if(!currentTransmission)return;
+
+  if(
+    !isRecipient(
+      currentTransmission,
+      agent
+    )
+  )return;
+
+  const status=
+    agent==="F-01"
+      ? northwindStatus
+      : greyfoxStatus;
+
+  status.textContent=
+    "ARCHIVIERUNG LÄUFT...";
+
+  try{
+
+    await archiveCurrent();
+
+    pageSound();
+
+    status.textContent=
+      "ÜBERTRAGUNG ARCHIVIERT.";
+
+    renderAgentTransmission(
+      agent
+    );
+
+  }catch(err){
+
+    status.textContent=
+      "ARCHIVIERUNG FEHLGESCHLAGEN.";
+  }
+}
+
+
+/* NORTHWIND FUNK */
+
+northwindReplyButton.addEventListener(
+  "click",
+  async e=>{
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    beginCompose(
+      "F-01",
+      true
+    );
+  }
+);
+
+
+northwindNewButton.addEventListener(
+  "click",
+  async e=>{
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    beginCompose(
+      "F-01",
+      false
+    );
+  }
+);
+
+
+northwindCancel.addEventListener(
+  "click",
+  async e=>{
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    cancelCompose(
+      "F-01"
+    );
+  }
+);
+
+
+northwindSend.addEventListener(
+  "click",
+  async e=>{
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    await sendFromAgent(
+      "F-01"
+    );
+  }
+);
+
+
+northwindArchiveButton.addEventListener(
+  "click",
+  async e=>{
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    await archiveFromAgent(
+      "F-01"
+    );
+  }
+);
+
+
+/* GREYFOX FUNK */
+
+greyfoxReplyButton.addEventListener(
+  "click",
+  async e=>{
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    beginCompose(
+      "TJ-01",
+      true
+    );
+  }
+);
+
+
+greyfoxNewButton.addEventListener(
+  "click",
+  async e=>{
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    beginCompose(
+      "TJ-01",
+      false
+    );
+  }
+);
+
+
+greyfoxCancel.addEventListener(
+  "click",
+  async e=>{
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    cancelCompose(
+      "TJ-01"
+    );
+  }
+);
+
+
+greyfoxSend.addEventListener(
+  "click",
+  async e=>{
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    await sendFromAgent(
+      "TJ-01"
+    );
+  }
+);
+
+
+greyfoxArchiveButton.addEventListener(
+  "click",
+  async e=>{
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    await archiveFromAgent(
+      "TJ-01"
+    );
+  }
+);
+
+
+[
+  northwindTransmission,
+  greyfoxTransmission
+].forEach(
+  panel=>{
+
+    panel.addEventListener(
+      "touchstart",
+      e=>e.stopPropagation(),
+      {passive:true}
+    );
+
+    panel.addEventListener(
+      "touchend",
+      e=>e.stopPropagation(),
+      {passive:true}
+    );
+
+    panel.addEventListener(
+      "click",
+      e=>e.stopPropagation()
+    );
+  }
+);
+
+
+/* ==========================================================
+   NORTHWIND AKTE
+   ========================================================== */
+
+northwindCard.addEventListener(
+  "touchstart",
+  ()=>ensureAudio(),
+  {passive:true}
+);
+
+
+northwindCard.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    selection.style.display=
+      "none";
+
+    currentPage=0;
+
+    northwindTransmissionHidden=
+      false;
+
+    await loadTransmission();
+
+    updatePage();
+
+    northwindViewer.style.display=
+      "block";
+  }
+);
+
+
+closeFile.addEventListener(
+  "click",
+  async e=>{
+
+    e.preventDefault();
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    showCentral();
+  }
+);
+
+
+function updatePage(){
+
+  paperImage.src=
+    pages[currentPage];
+
+  folderImage.src=
+    currentPage===0
+      ? folderPage1
+      : folderTurned;
+
+  pageIndicator.textContent=
+    `SEITE ${currentPage+1} / 4`;
+
+  if(currentPage===2){
+
+    if(
+      !northwindTransmissionHidden
+    ){
+
+      renderAgentTransmission(
+        "F-01"
+      );
+
+      northwindTransmission
+        .classList
+        .add("active");
+    }
+
+  }else{
+
+    northwindTransmission
+      .classList
+      .remove("active");
+
+    northwindTransmissionHidden=
+      false;
+  }
+}
+
+
+async function nextPage(){
+
+  await ensureAudio();
+
+  if(
+    currentPage>=
+    pages.length-1
+  ){
+    blinkToMissionMap("northwind");
+    return;
+  }
+
+  pageSound();
+
+  currentPage++;
+
+  updatePage();
+}
+
+
+async function previousPage(){
+
+  await ensureAudio();
+
+  if(currentPage<=0)return;
+
+  pageSound();
+
+  currentPage--;
+
+  updatePage();
+}
+
+
+let touchStartX=0;
+
+let touchStartY=0;
+
+
+northwindViewer.addEventListener(
+  "touchstart",
+  async e=>{
+
+    await ensureAudio();
+
+    if(
+      reader.classList.contains(
+        "open"
+      ) ||
+      northwindTransmission
+        .classList
+        .contains("active")
+    )return;
+
+    const t=
+      e.changedTouches[0];
+
+    touchStartX=
+      t.clientX;
+
+    touchStartY=
+      t.clientY;
+  },
+  {passive:true}
+);
+
+
+northwindViewer.addEventListener(
+  "touchend",
+  e=>{
+
+    if(
+      reader.classList.contains(
+        "open"
+      ) ||
+      northwindTransmission
+        .classList
+        .contains("active")
+    )return;
+
+    const t=
+      e.changedTouches[0];
+
+    const dx=
+      t.clientX-
+      touchStartX;
+
+    const dy=
+      t.clientY-
+      touchStartY;
+
+    if(
+      Math.abs(dx)<45 ||
+      Math.abs(dx)<
+      Math.abs(dy)
+    )return;
+
+    if(dx<0){
+      nextPage();
+    }else{
+      previousPage();
+    }
+  },
+  {passive:true}
+);
+
+
+paperBox.addEventListener(
+  "click",
+  async e=>{
+
+    if(currentPage===2)return;
+
+    e.preventDefault();
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    readerImage.src=
+      pages[currentPage];
+
+    reader.classList.add(
+      "open"
+    );
+
+    updateReaderContinueHotspot();
+  }
+);
+
+
+northwindCloseTransmission.addEventListener(
+  "click",
+  async e=>{
+
+    e.preventDefault();
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    northwindTransmissionHidden=
+      true;
+
+    northwindTransmission
+      .classList
+      .remove("active");
+
+    cancelCompose(
+      "F-01"
+    );
+  }
+);
+
+
+/* ==========================================================
+   GREYFOX AKTE
+   ========================================================== */
+
+greyfoxCard.addEventListener(
+  "touchstart",
+  ()=>ensureAudio(),
+  {passive:true}
+);
+
+
+greyfoxCard.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    selection.style.display=
+      "none";
+
+    greyfoxCurrentPage=0;
+
+    greyfoxTransmissionHidden=
+      false;
+
+    await loadTransmission();
+
+    updateGreyfoxPage();
+
+    greyfoxViewer.style.display=
+      "block";
+  }
+);
+
+
+greyfoxCloseFile.addEventListener(
+  "click",
+  async e=>{
+
+    e.preventDefault();
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    showCentral();
+  }
+);
+
+
+function updateGreyfoxPage(){
+
+  greyfoxPaperImage.src=
+    greyfoxPages[
+      greyfoxCurrentPage
+    ];
+
+  greyfoxFolderImage.src=
+    greyfoxCurrentPage===0
+      ? folderPage1
+      : folderTurned;
+
+  greyfoxPageIndicator.textContent=
+    `SEITE ${greyfoxCurrentPage+1} / 4`;
+
+  if(
+    greyfoxCurrentPage===2
+  ){
+
+    if(
+      !greyfoxTransmissionHidden
+    ){
+
+      renderAgentTransmission(
+        "TJ-01"
+      );
+
+      greyfoxTransmission
+        .classList
+        .add("active");
+    }
+
+  }else{
+
+    greyfoxTransmission
+      .classList
+      .remove("active");
+
+    greyfoxTransmissionHidden=
+      false;
+  }
+}
+
+
+async function nextGreyfoxPage(){
+
+  await ensureAudio();
+
+  if(
+    greyfoxCurrentPage>=
+    greyfoxPages.length-1
+  ){
+    blinkToMissionMap("greyfox");
+    return;
+  }
+
+  pageSound();
+
+  greyfoxCurrentPage++;
+
+  updateGreyfoxPage();
+}
+
+
+async function previousGreyfoxPage(){
+
+  await ensureAudio();
+
+  if(
+    greyfoxCurrentPage<=0
+  )return;
+
+  pageSound();
+
+  greyfoxCurrentPage--;
+
+  updateGreyfoxPage();
+}
+
+
+let greyfoxTouchStartX=0;
+
+let greyfoxTouchStartY=0;
+
+
+greyfoxViewer.addEventListener(
+  "touchstart",
+  async e=>{
+
+    await ensureAudio();
+
+    if(
+      reader.classList.contains(
+        "open"
+      ) ||
+      greyfoxTransmission
+        .classList
+        .contains("active")
+    )return;
+
+    const t=
+      e.changedTouches[0];
+
+    greyfoxTouchStartX=
+      t.clientX;
+
+    greyfoxTouchStartY=
+      t.clientY;
+  },
+  {passive:true}
+);
+
+
+greyfoxViewer.addEventListener(
+  "touchend",
+  e=>{
+
+    if(
+      reader.classList.contains(
+        "open"
+      ) ||
+      greyfoxTransmission
+        .classList
+        .contains("active")
+    )return;
+
+    const t=
+      e.changedTouches[0];
+
+    const dx=
+      t.clientX-
+      greyfoxTouchStartX;
+
+    const dy=
+      t.clientY-
+      greyfoxTouchStartY;
+
+    if(
+      Math.abs(dx)<45 ||
+      Math.abs(dx)<
+      Math.abs(dy)
+    )return;
+
+    if(dx<0){
+      nextGreyfoxPage();
+    }else{
+      previousGreyfoxPage();
+    }
+  },
+  {passive:true}
+);
+
+
+greyfoxPaperBox.addEventListener(
+  "click",
+  async e=>{
+
+    if(
+      greyfoxCurrentPage===2
+    )return;
+
+    e.preventDefault();
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    readerImage.src=
+      greyfoxPages[
+        greyfoxCurrentPage
+      ];
+
+    reader.classList.add(
+      "open"
+    );
+
+    updateReaderContinueHotspot();
+  }
+);
+
+
+greyfoxCloseTransmission.addEventListener(
+  "click",
+  async e=>{
+
+    e.preventDefault();
+
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    buttonClick();
+
+    greyfoxTransmissionHidden=
+      true;
+
+    greyfoxTransmission
+      .classList
+      .remove("active");
+
+    cancelCompose(
+      "TJ-01"
+    );
+  }
+);
+
+
+
+/* ==========================================================
+   SEITE 4 // LESEMODUS → VORGANG FORTSETZEN
+   ========================================================== */
+
+const readerContinueHotspot =
+  document.getElementById("readerContinueHotspot");
+
+function updateReaderContinueHotspot(){
+  const northwindPage4 =
+    currentPage===pages.length-1 &&
+    readerImage.src.includes(pages[currentPage]);
+
+  const greyfoxPage4 =
+    greyfoxCurrentPage===greyfoxPages.length-1 &&
+    readerImage.src.includes(greyfoxPages[greyfoxCurrentPage]);
+
+  readerContinueHotspot.classList.toggle(
+    "active",
+    northwindPage4 || greyfoxPage4
+  );
+}
+
+readerContinueHotspot.addEventListener(
+  "click",
+  async e=>{
+    e.preventDefault();
+    e.stopPropagation();
+
+    await ensureAudio();
+
+    const source =
+      readerImage.src.includes(
+        greyfoxPages[greyfoxPages.length-1]
+      )
+        ? "greyfox"
+        : "northwind";
+
+    reader.classList.remove("open");
+    readerContinueHotspot.classList.remove("active");
+
+    blinkToMissionMap(source);
+  }
+);
+
+/* ==========================================================
+   LESEMODUS
+   ========================================================== */
+
+readerClose.addEventListener(
+  "touchstart",
+  e=>{
+
+    e.stopPropagation();
+
+    ensureAudio();
+  },
+  {passive:true}
+);
+
+
+readerClose.addEventListener(
+  "click",
+  async e=>{
+
+    e.preventDefault();
+
+    e.stopPropagation();
+
+    readerContinueHotspot.classList.remove("active");
+
+    await ensureAudio();
+
+    buttonClick();
+
+    closeReader();
+  }
+);
+
+
+function closeReader(){
+
+  reader.classList.remove(
+    "open"
+  );
+}
+
+
+reader.addEventListener(
+  "click",
+  e=>{
+
+    if(e.target===reader){
+
+      closeReader();
+
+    }
+  }
+);
+
+
+/* ==========================================================
+   SPRACHKANAL // ZUSTAND
+   ========================================================== */
+
+const VOICE_IDENTITY_KEY=
+  "nw-gf-voice-identity-v1";
+
+const VOICE_MAX_SECONDS=
+  60;
+
+let voiceIdentity=
+  localStorage.getItem(
+    VOICE_IDENTITY_KEY
+  ) || "";
+
+let voiceRecorder=null;
+
+let voiceStream=null;
+
+let voiceChunks=[];
+
+let voiceBlob=null;
+
+let voiceMimeType="";
+
+let voiceStartedAt=0;
+
+let voiceDurationMs=0;
+
+let voiceTimerInterval=null;
+
+let voiceAutoStopTimeout=null;
+
+let voiceAnalyser=null;
+
+let voiceSourceNode=null;
+
+let voiceAnimationFrame=null;
+
+let voiceLocalAudio=null;
+
+let voiceLocalAudioUrl="";
+
+let voiceArchiveAudio=null;
+
+
+/* ==========================================================
+   SPRACHKANAL // HILFSFUNKTIONEN
+   ========================================================== */
+
+function getVoiceIdentity(){
+
+  return voiceIdentity;
+}
+
+
+function getVoiceIdentityName(
+  code
+){
+
+  if(code==="F-01"){
+
+    return "F-01 // NORTHWIND";
+
+  }
+
+  if(code==="TJ-01"){
+
+    return "TJ-01 // GREYFOX";
+
+  }
+
+  return "NICHT ZUGEORDNET";
+}
+
+
+function getVoiceRecipientCode(){
+
+  if(
+    voiceIdentity==="F-01"
+  ){
+
+    return "TJ-01";
+
+  }
+
+  if(
+    voiceIdentity==="TJ-01"
+  ){
+
+    return "F-01";
+
+  }
+
+  return "";
+}
+
+
+function updateVoiceIdentityDisplay(){
+
+  if(!voiceIdentity){
+
+    voiceIdentityDisplay.textContent=
+      "GERÄTESCHLÜSSEL // NICHT ZUGEORDNET";
+
+    return;
+  }
+
+  voiceIdentityDisplay.textContent=
+    "GERÄTESCHLÜSSEL // "+
+    getVoiceIdentityName(
+      voiceIdentity
+    );
+}
+
+
+function setVoiceStatus(text){
+
+  voiceStatusOverlay.textContent=
+    text;
+}
+
+
+function setVoiceTimer(
+  seconds
+){
+
+  const safe=
+    Math.max(
+      0,
+      Math.min(
+        VOICE_MAX_SECONDS,
+        Math.floor(seconds)
+      )
+    );
+
+  const minutes=
+    Math.floor(
+      safe/60
+    );
+
+  const rest=
+    safe%60;
+
+  voiceTimerOverlay.textContent=
+    String(minutes)
+      .padStart(2,"0")+
+    ":"+
+    String(rest)
+      .padStart(2,"0");
+}
+
+
+function setVoiceControls(
+  mode
+){
+
+  if(mode==="recording"){
+
+    voiceRecord.disabled=
+      true;
+
+    voiceStop.disabled=
+      false;
+
+    voicePlay.disabled=
+      true;
+
+    voiceDelete.disabled=
+      true;
+
+    voiceSend.disabled=
+      true;
+
+    voiceRecordLamp
+      .classList
+      .add("active");
+
+    voiceReadyLamp
+      .classList
+      .remove("active");
+
+    voiceSendLamp
+      .classList
+      .remove("active");
+
+    return;
+  }
+
+  if(mode==="ready"){
+
+    voiceRecord.disabled=
+      false;
+
+    voiceStop.disabled=
+      true;
+
+    voicePlay.disabled=
+      false;
+
+    voiceDelete.disabled=
+      false;
+
+    voiceSend.disabled=
+      false;
+
+    voiceRecordLamp
+      .classList
+      .remove("active");
+
+    voiceReadyLamp
+      .classList
+      .add("active");
+
+    return;
+  }
+
+  if(mode==="sending"){
+
+    voiceRecord.disabled=
+      true;
+
+    voiceStop.disabled=
+      true;
+
+    voicePlay.disabled=
+      true;
+
+    voiceDelete.disabled=
+      true;
+
+    voiceSend.disabled=
+      true;
+
+    voiceRecordLamp
+      .classList
+      .remove("active");
+
+    voiceReadyLamp
+      .classList
+      .remove("active");
+
+    voiceSendLamp
+      .classList
+      .add("active");
+
+    return;
+  }
+
+  voiceRecord.disabled=
+    false;
+
+  voiceStop.disabled=
+    true;
+
+  voicePlay.disabled=
+    true;
+
+  voiceDelete.disabled=
+    true;
+
+  voiceSend.disabled=
+    true;
+
+  voiceRecordLamp
+    .classList
+    .remove("active");
+
+  voiceReadyLamp
+    .classList
+    .remove("active");
+
+  voiceSendLamp
+    .classList
+    .remove("active");
+}
+
+
+function chooseVoiceMime(){
+
+  if(
+    !window.MediaRecorder
+  ){
+
+    return "";
+  }
+
+  const candidates=[
+    "audio/webm;codecs=opus",
+    "audio/mp4;codecs=mp4a.40.2",
+    "audio/mp4",
+    "audio/webm",
+    "audio/ogg;codecs=opus"
+  ];
+
+  for(
+    const type of candidates
+  ){
+
+    try{
+
+      if(
+        MediaRecorder
+          .isTypeSupported(
+            type
+          )
+      ){
+
+        return type;
+      }
+
+    }catch(e){}
+  }
+
+  return "";
+}
+
+
+function stopVoiceStream(){
+
+  if(voiceStream){
+
+    voiceStream
+      .getTracks()
+      .forEach(
+        track=>track.stop()
+      );
+
+    voiceStream=null;
+  }
+
+  if(voiceSourceNode){
+
+    try{
+
+      voiceSourceNode.disconnect();
+
+    }catch(e){}
+
+    voiceSourceNode=null;
+  }
+
+  voiceAnalyser=null;
+}
+
+
+function stopVoiceAnimation(){
+
+  if(
+    voiceAnimationFrame
+  ){
+
+    cancelAnimationFrame(
+      voiceAnimationFrame
+    );
+
+    voiceAnimationFrame=null;
+  }
+
+  const ctx=
+    voiceWaveCanvas
+      .getContext("2d");
+
+  ctx.clearRect(
+    0,
+    0,
+    voiceWaveCanvas.width,
+    voiceWaveCanvas.height
+  );
+
+  voiceNeedle.style.transform=
+    "rotate(-34deg)";
+}
+
+
+function drawVoiceSignal(){
+
+  if(!voiceAnalyser)return;
+
+  const rect=
+    voiceWaveCanvas
+      .getBoundingClientRect();
+
+  const ratio=
+    Math.max(
+      1,
+      window.devicePixelRatio||1
+    );
+
+  const width=
+    Math.max(
+      1,
+      Math.round(
+        rect.width*ratio
+      )
+    );
+
+  const height=
+    Math.max(
+      1,
+      Math.round(
+        rect.height*ratio
+      )
+    );
+
+  if(
+    voiceWaveCanvas.width!==width ||
+    voiceWaveCanvas.height!==height
+  ){
+
+    voiceWaveCanvas.width=
+      width;
+
+    voiceWaveCanvas.height=
+      height;
+  }
+
+  const ctx=
+    voiceWaveCanvas
+      .getContext("2d");
+
+  const data=
+    new Uint8Array(
+      voiceAnalyser.fftSize
+    );
+
+  voiceAnalyser
+    .getByteTimeDomainData(
+      data
+    );
+
+  ctx.clearRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+  ctx.beginPath();
+
+  ctx.lineWidth=
+    1.4*ratio;
+
+  ctx.strokeStyle=
+    "rgba(226,184,83,.95)";
+
+  let sum=0;
+
+  for(
+    let i=0;
+    i<data.length;
+    i++
+  ){
+
+    const normalized=
+      (data[i]-128)/128;
+
+    sum+=
+      normalized*
+      normalized;
+
+    const x=
+      i/
+      (data.length-1)*
+      width;
+
+    const y=
+      height/2+
+      normalized*
+      height*.42;
+
+    if(i===0){
+
+      ctx.moveTo(
+        x,
+        y
+      );
+
+    }else{
+
+      ctx.lineTo(
+        x,
+        y
+      );
+    }
+  }
+
+  ctx.stroke();
+
+  const rms=
+    Math.sqrt(
+      sum/data.length
+    );
+
+  const level=
+    Math.min(
+      1,
+      rms*4.5
+    );
+
+  const angle=
+    -34+
+    level*68;
+
+  voiceNeedle.style.transform=
+    "rotate("+
+    angle+
+    "deg)";
+
+  voiceAnimationFrame=
+    requestAnimationFrame(
+      drawVoiceSignal
+    );
+}
+
+
+function startVoiceSignal(
+  stream
+){
+
+  if(
+    !audioCtx ||
+    audioCtx.state!=="running"
+  )return;
+
+  try{
+
+    voiceSourceNode=
+      audioCtx
+        .createMediaStreamSource(
+          stream
+        );
+
+    voiceAnalyser=
+      audioCtx
+        .createAnalyser();
+
+    voiceAnalyser.fftSize=
+      256;
+
+    voiceAnalyser.smoothingTimeConstant=
+      .72;
+
+    voiceSourceNode.connect(
+      voiceAnalyser
+    );
+
+    drawVoiceSignal();
+
+  }catch(err){
+
+    console.log(
+      "Sprachanzeige konnte nicht gestartet werden.",
+      err
+    );
+  }
+}
+
+
+function clearLocalVoiceAudio(){
+
+  if(voiceLocalAudio){
+
+    try{
+
+      voiceLocalAudio.pause();
+
+    }catch(e){}
+
+    voiceLocalAudio=null;
+  }
+
+  if(voiceLocalAudioUrl){
+
+    URL.revokeObjectURL(
+      voiceLocalAudioUrl
+    );
+
+    voiceLocalAudioUrl="";
+  }
+}
+
+
+function stopArchiveVoiceAudio(){
+
+  if(voiceArchiveAudio){
+
+    try{
+
+      voiceArchiveAudio.pause();
+
+    }catch(e){}
+
+    voiceArchiveAudio=null;
+  }
+}
+
+
+function resetVoiceRecording(){
+
+  clearInterval(
+    voiceTimerInterval
+  );
+
+  clearTimeout(
+    voiceAutoStopTimeout
+  );
+
+  voiceTimerInterval=null;
+
+  voiceAutoStopTimeout=null;
+
+  if(
+    voiceRecorder &&
+    voiceRecorder.state==="recording"
+  ){
+
+    try{
+
+      voiceRecorder.stop();
+
+    }catch(e){}
+  }
+
+  voiceRecorder=null;
+
+  stopVoiceStream();
+
+  stopVoiceAnimation();
+
+  clearLocalVoiceAudio();
+
+  voiceChunks=[];
+
+  voiceBlob=null;
+
+  voiceMimeType="";
+
+  voiceStartedAt=0;
+
+  voiceDurationMs=0;
+
+  setVoiceTimer(0);
+
+  setVoiceControls(
+    "idle"
+  );
+}
+
+
+/* ==========================================================
+   SPRACHKANAL // IDENTITÄT
+   ========================================================== */
+
+function showVoiceIdentityModal(){
+
+  voiceIdentityModal
+    .classList
+    .add("active");
+}
+
+
+function hideVoiceIdentityModal(){
+
+  voiceIdentityModal
+    .classList
+    .remove("active");
+}
+
+
+function setVoiceIdentity(
+  code
+){
+
+  voiceIdentity=
+    code;
+
+  localStorage.setItem(
+    VOICE_IDENTITY_KEY,
+    code
+  );
+
+  updateVoiceIdentityDisplay();
+
+  hideVoiceIdentityModal();
+
+  setVoiceStatus(
+    "KANALSTATUS // IDENTITÄT BESTÄTIGT"
+  );
+
+  grantedSound();
+
+  checkVoiceBadge();
+}
+
+
+voiceChooseNorthwind.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    setVoiceIdentity(
+      "F-01"
+    );
+  }
+);
+
+
+voiceChooseGreyfox.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    setVoiceIdentity(
+      "TJ-01"
+    );
+  }
+);
+
+
+voiceIdentityCancel.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    hideVoiceIdentityModal();
+
+    voiceScreen.style.display=
+      "none";
+
+    selection.style.display=
+      "block";
+  }
+);
+
+
+voiceIdentityReset.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    stopArchiveVoiceAudio();
+
+    localStorage.removeItem(
+      VOICE_IDENTITY_KEY
+    );
+
+    voiceIdentity="";
+
+    updateVoiceIdentityDisplay();
+
+    voiceBadge.style.display=
+      "none";
+
+    voiceArchiveScreen
+      .classList
+      .remove("active");
+
+    showVoiceIdentityModal();
+  }
+);
+
+
+/* ==========================================================
+   SPRACHKANAL // ÖFFNEN / SCHLIESSEN
+   ========================================================== */
+
+voiceCard.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    selection.style.display=
+      "none";
+
+    voiceScreen.style.display=
+      "block";
+
+    voiceScreen.scrollTop=0;
+
+    updateVoiceIdentityDisplay();
+
+    setVoiceControls(
+      voiceBlob
+        ? "ready"
+        : "idle"
+    );
+
+    if(!voiceIdentity){
+
+      setVoiceStatus(
+        "KANALSTATUS // IDENTITÄT ERFORDERLICH"
+      );
+
+      showVoiceIdentityModal();
+
+      return;
+    }
+
+    setVoiceStatus(
+      "KANALSTATUS // SYNCHRONISIERUNG"
+    );
+
+    voiceRadioNoise();
+
+    await checkVoiceBadge();
+
+    setTimeout(
+      ()=>{
+
+        if(
+          voiceScreen.style.display===
+          "block"
+        ){
+
+          setVoiceStatus(
+            "KANALSTATUS // BEREIT"
+          );
+        }
+
+      },
+      1200
+    );
+  }
+);
+
+
+voiceBack.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    stopArchiveVoiceAudio();
+
+    if(
+      voiceRecorder &&
+      voiceRecorder.state==="recording"
+    ){
+
+      try{
+
+        voiceRecorder.stop();
+
+      }catch(e){}
+    }
+
+    voiceScreen.style.display=
+      "none";
+
+    voiceArchiveScreen
+      .classList
+      .remove("active");
+
+    selection.style.display=
+      "block";
+
+    await checkVoiceBadge();
+  }
+);
+
+
+/* ==========================================================
+   SPRACHKANAL // AUFNAHME
+   ========================================================== */
+
+voiceRecord.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    if(!voiceIdentity){
+
+      showVoiceIdentityModal();
+
+      return;
+    }
+
+    if(
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia ||
+      !window.MediaRecorder
+    ){
+
+      setVoiceStatus(
+        "MIKROFONAUFNAHME NICHT UNTERSTÜTZT"
+      );
+
+      return;
+    }
+
+    resetVoiceRecording();
+
+    try{
+
+      voiceStream=
+        await navigator
+          .mediaDevices
+          .getUserMedia({
+            audio:{
+              echoCancellation:true,
+              noiseSuppression:true,
+              autoGainControl:true
+            }
+          });
+
+      voiceMimeType=
+        chooseVoiceMime();
+
+  
+
+      voiceRecorder = voiceMimeType
+  ? new MediaRecorder(
+      voiceStream,
+      { mimeType: voiceMimeType }
+    )
+  : new MediaRecorder(
+      voiceStream
+    );
+      
+
+      voiceChunks=[];
+
+      voiceRecorder.addEventListener(
+        "dataavailable",
+        event=>{
+
+          if(
+            event.data &&
+            event.data.size>0
+          ){
+
+            voiceChunks.push(
+              event.data
+            );
+          }
+        }
+      );
+
+      voiceRecorder.addEventListener(
+        "stop",
+        finishVoiceRecording,
+        {once:true}
+      );
+
+      voiceRecorder.start(
+        250
+      );
+
+      voiceStartedAt=
+        Date.now();
+
+      voiceDurationMs=0;
+
+      setVoiceTimer(0);
+
+      setVoiceControls(
+        "recording"
+      );
+
+      setVoiceStatus(
+        "KANALSTATUS // AUFNAHME"
+      );
+
+      startVoiceSignal(
+        voiceStream
+      );
+
+      voiceTimerInterval=
+        setInterval(
+          ()=>{
+
+            const elapsed=
+              Date.now()-
+              voiceStartedAt;
+
+            setVoiceTimer(
+              elapsed/1000
+            );
+
+          },
+          200
+        );
+
+      voiceAutoStopTimeout=
+        setTimeout(
+          ()=>{
+
+            if(
+              voiceRecorder &&
+              voiceRecorder.state===
+              "recording"
+            ){
+
+              voiceRecorder.stop();
+            }
+
+          },
+          VOICE_MAX_SECONDS*
+          1000
+        );
+
+    }catch(err){
+
+      console.log(
+        "Mikrofonfehler",
+        err
+      );
+
+      resetVoiceRecording();
+
+      setVoiceStatus(
+        "MIKROFONZUGRIFF NICHT FREIGEGEBEN"
+      );
+    }
+  }
+);
+
+
+voiceStop.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    if(
+      voiceRecorder &&
+      voiceRecorder.state===
+      "recording"
+    ){
+
+      voiceRecorder.stop();
+    }
+  }
+);
+
+
+function finishVoiceRecording(){
+
+  clearInterval(
+    voiceTimerInterval
+  );
+
+  clearTimeout(
+    voiceAutoStopTimeout
+  );
+
+  voiceTimerInterval=null;
+
+  voiceAutoStopTimeout=null;
+
+  voiceDurationMs=
+    Math.min(
+      VOICE_MAX_SECONDS*
+      1000,
+      Date.now()-
+      voiceStartedAt
+    );
+
+  stopVoiceStream();
+
+  stopVoiceAnimation();
+
+  voiceMimeType=
+    (
+      voiceRecorder &&
+      voiceRecorder.mimeType
+    ) ||
+    voiceMimeType ||
+    (
+      voiceChunks[0] &&
+      voiceChunks[0].type
+    ) ||
+    "audio/webm";
+
+  voiceBlob=
+    new Blob(
+      voiceChunks,
+      {
+        type:
+          voiceMimeType
+      }
+    );
+
+  clearLocalVoiceAudio();
+
+  voiceLocalAudioUrl=
+    URL.createObjectURL(
+      voiceBlob
+    );
+
+  setVoiceTimer(
+    voiceDurationMs/
+    1000
+  );
+
+  setVoiceControls(
+    "ready"
+  );
+
+  setVoiceStatus(
+    "AUFNAHME BEREIT // "+
+    Math.ceil(
+      voiceBlob.size/1024
+    )+
+    " KB"
+  );
+}
+
+
+/* ==========================================================
+   SPRACHKANAL // ABHÖREN / LÖSCHEN
+   ========================================================== */
+
+voicePlay.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    if(
+      !voiceBlob ||
+      !voiceLocalAudioUrl
+    )return;
+
+    clearLocalVoiceAudio();
+
+    voiceLocalAudioUrl=
+      URL.createObjectURL(
+        voiceBlob
+      );
+
+    voiceLocalAudio=
+      new Audio(
+        voiceLocalAudioUrl
+      );
+
+    try{
+
+      await voiceLocalAudio.play();
+
+      setVoiceStatus(
+        "LOKALE AUFNAHME // WIEDERGABE"
+      );
+
+      voiceLocalAudio.addEventListener(
+        "ended",
+        ()=>{
+
+          setVoiceStatus(
+            "AUFNAHME BEREIT"
+          );
+
+        },
+        {once:true}
+      );
+
+    }catch(err){
+
+      setVoiceStatus(
+        "WIEDERGABE NICHT MÖGLICH"
+      );
+    }
+  }
+);
+
+
+voiceDelete.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    resetVoiceRecording();
+
+    setVoiceStatus(
+      "AUFNAHME GELÖSCHT"
+    );
+  }
+);
+
+
+/* ==========================================================
+   SPRACHKANAL // BASE64
+   ========================================================== */
+
+function blobToBase64(
+  blob
+){
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    )=>{
+
+      const reader=
+        new FileReader();
+
+      reader.onload=
+        ()=>{
+
+          const result=
+            String(
+              reader.result||""
+            );
+
+          const comma=
+            result.indexOf(",");
+
+          if(comma===-1){
+
+            reject(
+              new Error(
+                "Audio konnte nicht codiert werden"
+              )
+            );
+
+            return;
+          }
+
+          resolve(
+            result.slice(
+              comma+1
+            )
+          );
+        };
+
+      reader.onerror=
+        ()=>reject(
+          reader.error ||
+          new Error(
+            "Audio konnte nicht gelesen werden"
+          )
+        );
+
+      reader.readAsDataURL(
+        blob
+      );
+    }
+  );
+}
+
+
+function base64ToBlob(
+  base64,
+  mimeType
+){
+
+  const binary=
+    atob(base64);
+
+  const chunkSize=
+    8192;
+
+  const chunks=[];
+
+  for(
+    let offset=0;
+    offset<binary.length;
+    offset+=chunkSize
+  ){
+
+    const slice=
+      binary.slice(
+        offset,
+        offset+chunkSize
+      );
+
+    const bytes=
+      new Uint8Array(
+        slice.length
+      );
+
+    for(
+      let i=0;
+      i<slice.length;
+      i++
+    ){
+
+      bytes[i]=
+        slice.charCodeAt(i);
+    }
+
+    chunks.push(
+      bytes
+    );
+  }
+
+  return new Blob(
+    chunks,
+    {
+      type:
+        mimeType ||
+        "audio/webm"
+    }
+  );
+}
+
+
+/* ==========================================================
+   SPRACHKANAL // ÜBERTRAGEN
+   ========================================================== */
+
+voiceSend.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    if(
+      !voiceBlob ||
+      !voiceIdentity
+    )return;
+
+    const recipientCode=
+      getVoiceRecipientCode();
+
+    if(!recipientCode)return;
+
+    setVoiceControls(
+      "sending"
+    );
+
+    setVoiceStatus(
+      "ÜBERTRAGUNG LÄUFT …"
+    );
+
+    let metadataId="";
+
+    try{
+
+      const base64=
+        await blobToBase64(
+          voiceBlob
+        );
+
+      /*
+        Sicherheitsgrenze:
+        deutlich unter der maximalen RTDB-Stringgröße.
+      */
+
+      if(
+        base64.length>
+        9000000
+      ){
+
+        throw new Error(
+          "VOICE_TOO_LARGE"
+        );
+      }
+
+      const metadata={
+        sender:
+          getVoiceIdentityName(
+            voiceIdentity
+          ),
+        senderCode:
+          voiceIdentity,
+        recipient:
+          getVoiceIdentityName(
+            recipientCode
+          ),
+        recipientCode:
+          recipientCode,
+        timestamp:
+          Date.now(),
+        duration:
+          Math.round(
+            voiceDurationMs/
+            1000
+          ),
+        mimeType:
+          voiceBlob.type ||
+          voiceMimeType ||
+          "audio/webm",
+        version:1
+      };
+
+      const metaResponse=
+        await firebaseFetch(
+          VOICE_ARCHIVE_URL+
+          ".json",
+          {
+            method:"POST",
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
+            body:
+              JSON.stringify(
+                metadata
+              )
+          }
+        );
+
+      if(!metaResponse.ok){
+
+        throw new Error(
+          "VOICE_META_FAILED"
+        );
+      }
+
+      const metaResult=
+        await metaResponse.json();
+
+      metadataId=
+        metaResult &&
+        metaResult.name
+          ? metaResult.name
+          : "";
+
+      if(!metadataId){
+
+        throw new Error(
+          "VOICE_ID_FAILED"
+        );
+      }
+
+      const audioResponse=
+        await firebaseFetch(
+          VOICE_AUDIO_URL+
+          "/"+
+          encodeURIComponent(
+            metadataId
+          )+
+          ".json",
+          {
+            method:"PUT",
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
+            body:
+              JSON.stringify({
+                audio:
+                  base64,
+                mimeType:
+                  metadata.mimeType
+              })
+          }
+        );
+
+      if(!audioResponse.ok){
+
+        throw new Error(
+          "VOICE_AUDIO_FAILED"
+        );
+      }
+
+      const latestResponse=
+        await firebaseFetch(
+          VOICE_LATEST_URL,
+          {
+            method:"PUT",
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
+            body:
+              JSON.stringify({
+                id:
+                  metadataId,
+                senderCode:
+                  voiceIdentity,
+                recipientCode:
+                  recipientCode,
+                timestamp:
+                  metadata.timestamp
+              })
+          }
+        );
+
+      if(!latestResponse.ok){
+
+        throw new Error(
+          "VOICE_LATEST_FAILED"
+        );
+      }
+
+      grantedSound();
+
+      voiceSendLamp
+        .classList
+        .add("active");
+
+      setVoiceStatus(
+        "ÜBERTRAGUNG ABGESCHLOSSEN"
+      );
+
+      clearLocalVoiceAudio();
+
+      voiceChunks=[];
+
+      voiceBlob=null;
+
+      voiceMimeType="";
+
+      voiceStartedAt=0;
+
+      voiceDurationMs=0;
+
+      setVoiceTimer(0);
+
+      setVoiceControls(
+        "idle"
+      );
+
+      voiceSendLamp
+        .classList
+        .add("active");
+
+      setTimeout(
+        ()=>{
+
+          voiceSendLamp
+            .classList
+            .remove("active");
+
+        },
+        1400
+      );
+
+      await loadVoiceArchive();
+
+      await checkVoiceBadge();
+
+    }catch(err){
+
+      console.log(
+        "Sprachübertragung fehlgeschlagen.",
+        err
+      );
+
+      /*
+        Falls Metadaten bereits angelegt wurden,
+        aber die Audiodatei scheiterte:
+        verwaisten Archiveintrag entfernen.
+      */
+
+      if(metadataId){
+
+        try{
+
+          await firebaseFetch(
+            VOICE_ARCHIVE_URL+
+            "/"+
+            encodeURIComponent(
+              metadataId
+            )+
+            ".json",
+            {
+              method:"DELETE"
+            }
+          );
+
+        }catch(e){}
+      }
+
+      setVoiceControls(
+        "ready"
+      );
+
+      if(
+        err &&
+        err.message===
+        "VOICE_TOO_LARGE"
+      ){
+
+        setVoiceStatus(
+          "AUFNAHME ZU GROSS // BITTE KÜRZER"
+        );
+
+      }else{
+
+        setVoiceStatus(
+          "ÜBERTRAGUNG FEHLGESCHLAGEN"
+        );
+      }
+    }
+  }
+);
+
+
+/* ==========================================================
+   SPRACHARCHIV
+   ========================================================== */
+
+voiceArchiveOpen.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    voiceArchiveScreen
+      .classList
+      .add("active");
+
+    await loadVoiceArchive();
+  }
+);
+
+
+voiceArchiveBack.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    stopArchiveVoiceAudio();
+
+    voiceArchiveScreen
+      .classList
+      .remove("active");
+
+    await checkVoiceBadge();
+  }
+);
+
+
+async function loadVoiceArchive(){
+
+  voiceArchiveList.innerHTML=
+    '<div class="voiceArchiveEmpty">'+
+    'ARCHIV WIRD GELADEN …'+
+    '</div>';
+
+  try{
+
+    const response=
+      await firebaseFetch(
+        VOICE_ARCHIVE_URL+
+        ".json?t="+
+        Date.now(),
+        {
+          cache:"no-store"
+        }
+      );
+
+    if(!response.ok){
+
+      throw new Error(
+        "Spracharchiv nicht erreichbar"
+      );
+    }
+
+    const data=
+      await response.json();
+
+    let items=[];
+
+    if(data){
+
+      items=
+        Object.entries(data)
+          .map(
+            ([id,item])=>({
+              id,
+              ...item
+            })
+          )
+          .sort(
+            (a,b)=>
+              (b.timestamp||0)-
+              (a.timestamp||0)
+          );
+    }
+
+    renderVoiceArchive(
+      items
+    );
+
+  }catch(err){
+
+    console.log(
+      "Spracharchiv konnte nicht geladen werden.",
+      err
+    );
+
+    voiceArchiveList.innerHTML=
+      '<div class="voiceArchiveEmpty">'+
+      'SPRACHARCHIV NICHT ERREICHBAR'+
+      '</div>';
+  }
+}
+
+
+function renderVoiceArchive(
+  items
+){
+
+  voiceArchiveList.innerHTML="";
+
+  if(!items.length){
+
+    voiceArchiveList.innerHTML=
+      '<div class="voiceArchiveEmpty">'+
+     'SPRACHÜBERTRAGUNGEN // ARCHIV'+
+      '</div>';
+
+    return;
+  }
+
+  items.forEach(
+    item=>{
+
+      const wrapper=
+        document.createElement(
+          "div"
+        );
+
+      wrapper.className=
+        "voiceArchiveEntry";
+
+      const duration=
+        Number(
+          item.duration||0
+        );
+
+      const min=
+        Math.floor(
+          duration/60
+        );
+
+      const sec=
+        Math.floor(
+          duration%60
+        );
+
+      wrapper.innerHTML=
+        '<div class="voiceArchiveDate">'+
+        escapeHtml(
+          formatDate(
+            item.timestamp
+          )
+        )+
+        '</div>'+
+        '<div class="voiceArchiveRoute">'+
+        escapeHtml(
+          item.sender ||
+          getVoiceIdentityName(
+            item.senderCode
+          )
+        )+
+        ' → '+
+        escapeHtml(
+          item.recipient ||
+          getVoiceIdentityName(
+            item.recipientCode
+          )
+        )+
+        '</div>'+
+        '<div class="voiceArchiveDuration">'+
+        'DAUER // '+
+        String(min).padStart(2,"0")+
+        ':'+
+        String(sec).padStart(2,"0")+
+        '</div>'+
+        '<button class="voiceArchivePlay">'+
+        '▶ ABHÖREN'+
+        '</button>';
+
+      const playButton=
+        wrapper.querySelector(
+          ".voiceArchivePlay"
+        );
+
+      playButton.addEventListener(
+        "click",
+        async()=>{
+
+          await ensureAudio();
+
+          buttonClick();
+
+          await playVoiceArchiveItem(
+            item,
+            playButton
+          );
+        }
+      );
+
+      voiceArchiveList.appendChild(
+        wrapper
+      );
+    }
+  );
+}
+
+
+async function playVoiceArchiveItem(
+  item,
+  button
+){
+
+  stopArchiveVoiceAudio();
+
+  const oldText=
+    button.textContent;
+
+  button.disabled=
+    true;
+
+  button.textContent=
+    "WIRD GELADEN …";
+
+  try{
+
+    let audioData=null;
+
+    /*
+      Neue Struktur:
+      Audio wird erst jetzt geladen.
+    */
+
+    const response=
+      await firebaseFetch(
+        VOICE_AUDIO_URL+
+        "/"+
+        encodeURIComponent(
+          item.id
+        )+
+        ".json?t="+
+        Date.now(),
+        {
+          cache:"no-store"
+        }
+      );
+
+    if(!response.ok){
+
+      throw new Error(
+        "Audio nicht erreichbar"
+      );
+    }
+
+    audioData=
+      await response.json();
+
+    /*
+      Falls irgendwann ein alter Eintrag
+      Audio direkt im Datensatz enthielt,
+      bleibt die Wiedergabe kompatibel.
+    */
+
+    let base64="";
+    let mimeType=
+      item.mimeType ||
+      "audio/webm";
+
+    if(
+      audioData &&
+      typeof audioData===
+      "object"
+    ){
+
+      base64=
+        audioData.audio ||
+        "";
+
+      mimeType=
+        audioData.mimeType ||
+        mimeType;
+
+    }else if(
+      typeof audioData===
+      "string"
+    ){
+
+      base64=
+        audioData;
+    }
+
+    if(
+      !base64 &&
+      item.audio
+    ){
+
+      base64=
+        item.audio;
+    }
+
+    if(!base64){
+
+      throw new Error(
+        "Keine Audiodaten"
+      );
+    }
+
+    const blob=
+      base64ToBlob(
+        base64,
+        mimeType
+      );
+
+    const url=
+      URL.createObjectURL(
+        blob
+      );
+
+    voiceArchiveAudio=
+      new Audio(
+        url
+      );
+
+    voiceArchiveAudio
+      .addEventListener(
+        "ended",
+        ()=>{
+
+          URL.revokeObjectURL(
+            url
+          );
+
+          button.disabled=
+            false;
+
+          button.textContent=
+            oldText;
+        },
+        {once:true}
+      );
+
+    voiceArchiveAudio
+      .addEventListener(
+        "error",
+        ()=>{
+
+          URL.revokeObjectURL(
+            url
+          );
+
+          button.disabled=
+            false;
+
+          button.textContent=
+            oldText;
+        },
+        {once:true}
+      );
+
+    await voiceArchiveAudio.play();
+
+    button.textContent=
+      "■ WIEDERGABE";
+
+    /*
+      Erst erfolgreiche Wiedergabe
+      markiert eine eingegangene
+      Nachricht auf diesem Gerät
+      als gehört.
+    */
+
+    if(
+      voiceIdentity &&
+      item.recipientCode===
+      voiceIdentity
+    ){
+
+      markVoiceMessageHeard(
+        item
+      );
+    }
+
+  }catch(err){
+
+    console.log(
+      "Sprachnachricht konnte nicht abgespielt werden.",
+      err
+    );
+
+    button.disabled=
+      false;
+
+    button.textContent=
+      "WIEDERGABE FEHLGESCHLAGEN";
+
+    setTimeout(
+      ()=>{
+
+        button.textContent=
+          oldText;
+
+      },
+      1500
+    );
+  }
+}
+
+
+/* ==========================================================
+   SPRACHKANAL // BADGE
+   ========================================================== */
+
+function getVoiceHeardKey(){
+
+  if(!voiceIdentity){
+
+    return "";
+  }
+
+  return (
+    "nw-gf-voice-heard-"+
+    voiceIdentity
+  );
+}
+
+
+function getVoiceHeardTimestamp(){
+
+  const key=
+    getVoiceHeardKey();
+
+  if(!key)return 0;
+
+  return Number(
+    localStorage.getItem(
+      key
+    ) || 0
+  );
+}
+
+
+function markVoiceMessageHeard(
+  item
+){
+
+  if(
+    !voiceIdentity ||
+    !item ||
+    item.recipientCode!==
+    voiceIdentity
+  )return;
+
+  const key=
+    getVoiceHeardKey();
+
+  const current=
+    getVoiceHeardTimestamp();
+
+  const timestamp=
+    Number(
+      item.timestamp||0
+    );
+
+  localStorage.setItem(
+    key,
+    String(
+      Math.max(
+        current,
+        timestamp
+      )
+    )
+  );
+
+  checkVoiceBadge();
+}
+
+
+async function checkVoiceBadge(){
+
+  voiceBadge.style.display=
+    "none";
+
+  if(!voiceIdentity){
+
+    return;
+  }
+
+  try{
+
+    const response=
+      await firebaseFetch(
+        VOICE_LATEST_URL+
+        "?t="+
+        Date.now(),
+        {
+          cache:"no-store"
+        }
+      );
+
+    if(!response.ok){
+
+      return;
+    }
+
+    const latest=
+      await response.json();
+
+    if(!latest){
+
+      return;
+    }
+
+    if(
+      latest.recipientCode!==
+      voiceIdentity
+    ){
+
+      return;
+    }
+
+    const heard=
+      getVoiceHeardTimestamp();
+
+    const latestTime=
+      Number(
+        latest.timestamp||0
+      );
+
+    if(
+      latestTime>
+      heard
+    ){
+
+      voiceBadge.style.display=
+        "block";
+
+      if(
+        voiceScreen.style.display===
+        "block"
+      ){
+
+        setVoiceStatus(
+          "NEUE SPRACHÜBERTRAGUNG EINGEGANGEN"
+        );
+      }
+    }
+
+  }catch(err){
+
+    console.log(
+      "Sprachstatus konnte nicht geprüft werden.",
+      err
+    );
+  }
+}
+
+
+/* ==========================================================
+   SPRACHKANAL // POLLING
+   ========================================================== */
+
+setInterval(
+  ()=>{
+
+    if(
+      selection.style.display===
+      "block"
+    ){
+
+      checkVoiceBadge();
+    }
+
+  },
+  12000
+);
+
+
+document.addEventListener(
+  "visibilitychange",
+  ()=>{
+
+    if(!document.hidden){
+
+      checkVoiceBadge();
+
+      loadTransmission();
+    }
+  }
+);
+
+
+/* ==========================================================
+   ARCHIV
+   ========================================================== */
+
+archiveCard.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    selection.style.display=
+      "none";
+
+    archiveScreen.style.display=
+      "block";
+
+    archiveScreen
+      .classList
+      .remove("opened");
+
+    archiveScreen
+      .classList
+      .add("closed");
+
+    drawerHotspot.style.display=
+      "block";
+
+    archiveFilesHotspot.style.display=
+      "none";
+
+    drawerCloseHotspot.style.display=
+      "none";
+
+    archiveHint.textContent=
+      "ARCHIVZUGRIFF // SCHUBLADE NW-GF/01 ANTIPPEN";
+  }
+);
+
+
+drawerHotspot.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    setTimeout(
+      ()=>pageSound(),
+      100
+    );
+
+    archiveScreen
+      .classList
+      .remove("closed");
+
+    archiveScreen
+      .classList
+      .add("opened");
+
+    drawerHotspot.style.display=
+      "none";
+
+    archiveFilesHotspot.style.display=
+      "block";
+
+    drawerCloseHotspot.style.display=
+      "block";
+
+    archiveHint.textContent=
+      "ARCHIV GEÖFFNET // AKTENBESTAND ANTIPPEN";
+  }
+);
+
+
+drawerCloseHotspot.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    archiveScreen
+      .classList
+      .remove("opened");
+
+    archiveScreen
+      .classList
+      .add("closed");
+
+    drawerCloseHotspot.style.display=
+      "none";
+
+    archiveFilesHotspot.style.display=
+      "none";
+
+    drawerHotspot.style.display=
+      "block";
+
+    archiveHint.textContent=
+      "ARCHIVZUGRIFF // SCHUBLADE NW-GF/01 ANTIPpen";
+  }
+);
+
+
+archiveFilesHotspot.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    pageSound();
+
+    archiveHint.textContent=
+      "ARCHIV WIRD GELADEN …";
+
+    try{
+
+      await loadArchive();
+
+      archiveIndex
+        .classList
+        .add("active");
+
+    }catch(err){
+
+      archiveList.innerHTML=
+        '<div class="archive-empty">'+
+        'ARCHIV KONNTE NICHT GELADEN WERDEN.'+
+        '</div>';
+
+      archiveIndex
+        .classList
+        .add("active");
+    }
+  }
+);
+
+
+archiveBack.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    archiveScreen.style.display=
+      "none";
+
+    showCentral();
+  }
+);
+
+
+archiveIndexBack.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    buttonClick();
+
+    archiveIndex
+      .classList
+      .remove("active");
+  }
+);
+
+
+archiveDocumentBack.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+    pageSound();
+
+    archiveDocument
+      .classList
+      .remove("active");
+  }
+);
+
+
+function renderArchiveList(){
+
+  archiveList.innerHTML="";
+
+  if(!archiveCache.length){
+
+    archiveList.innerHTML=
+      '<div class="archive-empty">'+
+      'ARCHIV LEER<br><br>'+
+      'KEINE ABGELEGTEN ÜBERTRAGUNGEN'+
+      '</div>';
+
+    return;
+  }
+
+  archiveCache.forEach(
+    item=>{
+
+      const button=
+        document.createElement(
+          "button"
+        );
+
+      button.className=
+        "archive-entry";
+
+      const text=
+        item.text||"";
+
+      const preview=
+        text.length>70
+          ? text.slice(0,70)+"…"
+          : text;
+
+      button.innerHTML=
+        '<div class="archive-entry-date">'+
+        escapeHtml(
+          formatDate(
+            item.timestamp
+          )
+        )+
+        '</div>'+
+        '<div class="archive-entry-route">'+
+        escapeHtml(
+          item.sender||
+          "UNBEKANNT"
+        )+
+        " → "+
+        escapeHtml(
+          item.recipient||
+          "UNBEKANNT"
+        )+
+        '</div>'+
+        '<div class="archive-entry-preview">'+
+        escapeHtml(
+          preview
+        )+
+        '</div>';
+
+      button.addEventListener(
+        "click",
+        async()=>{
+
+          await ensureAudio();
+
+          pageSound();
+
+          openArchiveDocument(
+            item
+          );
+        }
+      );
+
+      archiveList.appendChild(
+        button
+      );
+    }
+  );
+}
+
+
+function openArchiveDocument(
+  item
+){
+
+  archiveDocumentDate.textContent=
+    formatDate(
+      item.timestamp
+    );
+
+  archiveDocumentRoute.textContent=
+    (
+      item.sender||
+      "UNBEKANNT"
+    )+
+    " → "+
+    (
+      item.recipient||
+      "UNBEKANNT"
+    );
+
+  archiveDocumentText.textContent=
+    item.text||"";
+
+  archiveDocument
+    .classList
+    .add("active");
+}
+
+
+function formatDate(timestamp){
+
+  if(!timestamp){
+
+    return "DATUM UNBEKANNT";
+  }
+
+  const date=
+    new Date(
+      timestamp
+    );
+
+  return date.toLocaleString(
+    "de-DE",
+    {
+      day:"2-digit",
+      month:"2-digit",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+}
+
+
+function escapeHtml(value){
+
+  return String(value)
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+}
+
+
+/* ==========================================================
+   SITZUNG BEENDEN – NEUES FINALE
+   ========================================================== */
+
+centralEndSession.addEventListener("click",async()=>{
+
+  await ensureAudio();
+  const outroMusic = new Audio("outro.mp3");
+outroMusic.volume = 1;
+outroMusic.play().catch(()=>{});
+
+  selection.style.display="none";
+
+  sessionSequenceTitle.textContent=
+    "SITZUNG WIRD BEENDET";
+
+  sessionSequenceLine.textContent=
+    "AKTENZUGRIFF WIRD GESCHLOSSEN …";
+
+  terminalBar.classList.remove("collapse");
+
+  sessionEnd.classList.add("active");
+
+  setTimeout(()=>{
+  
+    sessionSequenceLine.textContent=
+      "ÜBERTRAGUNGSKANAL NW-GF/01 WIRD GETRENNT …";
+  },1400);
+
+  setTimeout(()=>{
+
+    sessionSequenceTitle.textContent=
+      "IDENTITÄTSSCHLÜSSEL ENTFERNT";
+    sessionSequenceLine.textContent=
+      "NORTHWIND // OFFLINE   ·   GREYFOX // OFFLINE";
+  },3000);
+
+  setTimeout(()=>{
+  
+    sessionSequenceTitle.textContent=
+      "SITZUNG ORDNUNGSGEMÄSS BEENDET";
+    sessionSequenceLine.textContent=
+      "REFERAT F // VERBINDUNG GESCHLOSSEN";
+  },4300);
+
+  setTimeout(()=>{
+    terminalBar.classList.add("collapse");
+  },5200);
+
+  setTimeout(()=>{
+    sessionEnd.classList.remove("active");
+    channelClosed.classList.add("active");
+  },6100);
+});
+
+
+/* ==========================================================
+   INITIALISIERUNG
+   ========================================================== */
+
+updateVoiceIdentityDisplay();
+
+setVoiceControls(
+  "idle"
+);
+
+loadTransmission();
+
+checkVoiceBadge();
+/* ==========================================================
+   CINEMATIC INTRO // STEUERUNG
+   AUSSEN → FLUR → IDENTITÄT → BRIEFING → ZENTRALE
+   ========================================================== */
+
+const cinematicIntro =
+  document.getElementById("cinematicIntro");
+
+const introExterior =
+  document.getElementById("introExterior");
+
+const introCorridor =
+  document.getElementById("introCorridor");
+
+const introBriefing =
+  document.getElementById("introBriefing");
+
+const introExteriorHotspot =
+  document.getElementById("introExteriorHotspot");
+
+const introCorridorHotspot =
+  document.getElementById("introCorridorHotspot");
+
+const exteriorRing =
+  document.getElementById("exteriorRing");
+
+const corridorRing =
+  document.getElementById("corridorRing");
+
+const introIdentityShade =
+  document.getElementById("introIdentityShade");
+
+const introIdentityGate =
+  document.getElementById("introIdentityGate");
+
+const introAnswer =
+  document.getElementById("introAnswer");
+
+const introCheckButton =
+  document.getElementById("introCheckButton");
+
+const introError =
+  document.getElementById("introError");
+
+const briefingContinue =
+  document.getElementById("briefingContinue");
+
+
+let introFailedAttempts = 0;
+/* ==========================================================
+   SYSTEMSTART // NORTHWIND → GREYFOX → AUSSENSTELLE
+   ========================================================== */
+
+const agentBoot =
+  document.getElementById("agentBoot");
+
+const bootNorthwind =
+  document.getElementById("bootNorthwind");
+
+const bootGreyfox =
+  document.getElementById("bootGreyfox");
+
+
+function runAgentBoot(){
+
+  bootNorthwind.classList.add(
+    "bootFlash"
+  );
+
+  setTimeout(
+    ()=>{
+      bootGreyfox.classList.add(
+        "bootFlash"
+      );
+    },
+    720
+  );
+
+  setTimeout(
+    ()=>{
+      bootNorthwind.classList.remove(
+        "bootFlash"
+      );
+
+      void bootNorthwind.offsetWidth;
+
+      bootNorthwind.classList.add(
+        "bootFlash"
+      );
+    },
+    1450
+  );
+
+  setTimeout(
+    ()=>{
+      agentBoot.classList.add(
+        "bootOff"
+      );
+    },
+    2050
+  );
+
+  setTimeout(
+    ()=>{
+      agentBoot.style.display =
+        "none";
+    },
+    2380
+  );
+}
+
+
+const audioStartGate =
+  document.getElementById("audioStartGate");
+
+const audioStartButton =
+  document.getElementById("audioStartButton");
+let introMusic;
+audioStartButton.addEventListener("click", async()=>{
+
+  audioStartButton.disabled = true;
+
+  await ensureAudio();
+introMusic = new Audio("intro.mp3");
+introMusic.volume = 1;
+introMusic.play().catch(()=>{});
+  audioStartGate.classList.add("off");
+
+  setTimeout(()=>{
+    audioStartGate.style.display = "none";
+    runAgentBoot();
+  },250);
+
+});
+
+/* ==========================================================
+   KLEINE INTRO-SOUNDS
+   ========================================================== */
+
+function introBeep(){
+
+  if(
+    !audioCtx ||
+    audioCtx.state !== "running"
+  ) return;
+
+  const now = audioCtx.currentTime;
+
+  function boom(delay, frequency){
+
+    const osc =
+      audioCtx.createOscillator();
+
+    const gain =
+      audioCtx.createGain();
+
+    osc.type = "sine";
+
+    osc.frequency.setValueAtTime(
+      frequency,
+      now + delay
+    );
+
+    osc.frequency.exponentialRampToValueAtTime(
+      38,
+      now + delay + .28
+    );
+
+    gain.gain.setValueAtTime(
+      .0001,
+      now + delay
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      .75,
+      now + delay + .015
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      .0001,
+      now + delay + .38
+    );
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start(now + delay);
+    osc.stop(now + delay + .4);
+  }
+
+  boom(0, 92);
+boom(.42, 86);
+boom(.84, 80);
+boom(1.20, 74);
+boom(1.56, 68);
+boom(1.92, 62);
+}
+
+
+function introDoorSound(){
+
+  if(
+    !audioCtx ||
+    audioCtx.state !== "running"
+  ) return;
+
+  const now =
+    audioCtx.currentTime;
+
+  const osc =
+    audioCtx.createOscillator();
+
+  const gain =
+    audioCtx.createGain();
+
+  osc.type = "sawtooth";
+
+  osc.frequency.setValueAtTime(
+    82,
+    now
+  );
+
+  osc.frequency.exponentialRampToValueAtTime(
+    43,
+    now + .38
+  );
+
+  gain.gain.setValueAtTime(
+    .0001,
+    now
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    .16,
+    now + .015
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    .0001,
+    now + .42
+  );
+
+  osc.connect(gain);
+
+  gain.connect(
+    audioCtx.destination
+  );
+
+  osc.start(now);
+
+  osc.stop(
+    now + .45
+  );
+}
+
+function vaultLockSound(){
+  if(!audioCtx || audioCtx.state !== "running") return;
+
+  const now = audioCtx.currentTime;
+
+  [0, .11, .24].forEach((delay, i)=>{
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = i === 1 ? "square" : "sawtooth";
+    osc.frequency.setValueAtTime(
+      i === 0 ? 145 : i === 1 ? 95 : 62,
+      now + delay
+    );
+
+    gain.gain.setValueAtTime(.0001, now + delay);
+    gain.gain.exponentialRampToValueAtTime(.22, now + delay + .008);
+    gain.gain.exponentialRampToValueAtTime(.0001, now + delay + .12);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start(now + delay);
+    osc.stop(now + delay + .13);
+  });
+}
+/* ==========================================================
+   AUSSENANSICHT → FLUR
+   ========================================================== */
+
+introExteriorHotspot.addEventListener(
+  "touchstart",
+  ()=>ensureAudio(),
+  {passive:true}
+);
+
+
+introExteriorHotspot.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+if(introMusic){
+  introMusic.pause();
+  introMusic.currentTime = 0;
+}
+  
+
+    setTimeout(
+      introDoorSound,
+      130
+    );
+
+    exteriorRing.classList.add(
+      "granted"
+    );
+
+    introExteriorHotspot.disabled =
+      true;
+
+    setTimeout(
+      ()=>{
+
+        introExterior.classList.add(
+          "zoomAway"
+        );
+
+      },
+      220
+    );
+
+    setTimeout(
+      ()=>{
+
+        introExterior.classList.remove(
+          "active"
+        );
+
+        introCorridor.classList.add(
+          "active"
+        );
+
+        corridorRing.classList.add(
+          "arrival"
+        );
+
+      },
+      850
+    );
+  }
+);
+
+
+/* ==========================================================
+   FLUR → IDENTITÄTSPRÜFUNG
+   ========================================================== */
+
+introCorridorHotspot.addEventListener(
+  "touchstart",
+  ()=>ensureAudio(),
+  {passive:true}
+);
+
+
+introCorridorHotspot.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+
+
+
+    introCorridorHotspot.disabled =
+      true;
+
+    corridorRing.classList.remove(
+      "arrival"
+    );
+
+    introIdentityShade.classList.add(
+      "active"
+    );
+
+    introIdentityGate.classList.add(
+      "active"
+    );
+
+    setTimeout(
+      ()=>{
+        introAnswer.focus();
+      },
+      450
+    );
+  }
+);
+
+
+/* ==========================================================
+   IDENTITÄTSPRÜFUNG
+   ========================================================== */
+
+introAnswer.addEventListener(
+  "focus",
+  async()=>{
+
+    await ensureAudio();
+  }
+);
+
+
+introAnswer.addEventListener(
+  "input",
+  async()=>{
+
+    await ensureAudio();
+
+    keyClick();
+  }
+);
+
+
+introAnswer.addEventListener(
+  "keydown",
+  e=>{
+
+    if(
+      e.key === "Enter"
+    ){
+
+      checkIntroAnswer();
+    }
+  }
+);
+
+
+introCheckButton.addEventListener(
+  "touchstart",
+  ()=>ensureAudio(),
+  {passive:true}
+);
+
+
+introCheckButton.addEventListener(
+  "click",
+  checkIntroAnswer
+);
+
+
+async function checkIntroAnswer(){
+
+  if(
+    introAnswer.disabled
+  ) return;
+
+  await ensureAudio();
+
+  buttonClick();
+
+  const value =
+    introAnswer.value
+      .trim()
+      .toLocaleLowerCase(
+        "de-DE"
+      );
+
+
+  /* RICHTIGE ANTWORT */
+
+  if(
+    value === "football rivals"
+  ){
+
+    introFailedAttempts = 0;
+
+    introError.style.display =
+      "none";
+
+    introAnswer.disabled =
+      true;
+
+    introCheckButton.disabled =
+      true;
+
+    corridorRing.classList.add(
+      "granted"
+    );
+
+    setTimeout(
+      ()=>{
+        grantedSound();
+      },
+      90
+    );
+
+    setTimeout(
+      ()=>{
+      vaultLockSound();
+      },
+      300
+    );
+
+    setTimeout(
+      ()=>{
+
+        introIdentityGate.classList.remove(
+          "active"
+        );
+
+        introIdentityShade.classList.remove(
+          "active"
+        );
+
+      },
+      480
+    );
+
+    setTimeout(
+      ()=>{
+
+        introCorridor.classList.add(
+          "zoomAway"
+        );
+
+      },
+      650
+    );
+
+    setTimeout(
+      ()=>{
+
+        introCorridor.classList.remove(
+          "active"
+        );
+
+        introBriefing.classList.add(
+          "active"
+        );
+
+      },
+      1250
+    );
+
+    setTimeout(
+      ()=>{
+
+        briefingContinue.classList.add(
+          "ready"
+        );
+
+      },
+      2050
+    );
+
+    return;
+  }
+
+
+  /* ERSTER FEHLVERSUCH */
+
+  introFailedAttempts++;
+
+  if(
+    introFailedAttempts === 1
+  ){
+
+    introError.innerHTML =
+      "<strong>ZUGRIFF VERWEIGERT</strong><br>" +
+      "IDENTITÄT NICHT BESTÄTIGT";
+
+    introError.style.display =
+      "block";
+
+    return;
+  }
+
+
+  /* ZWEITER FEHLVERSUCH */
+
+  if(
+    introFailedAttempts === 2
+  ){
+
+    introError.innerHTML =
+      "<strong>WARNUNG</strong><br>" +
+      "ZWEITER FEHLVERSUCH REGISTRIERT";
+
+    introError.style.display =
+      "block";
+
+    return;
+  }
+
+
+  /* DRITTER FEHLVERSUCH → BESTEHENDES F-7 */
+
+  introFailedAttempts = 0;
+
+  introError.style.display =
+    "none";
+
+  introAnswer.disabled =
+    true;
+
+  introCheckButton.disabled =
+    true;
+
+  securityCountdown.textContent =
+    "SYSTEMSPERRE // 00:05";
+
+  securityLock.classList.add(
+    "active",
+    "alarm-flash"
+  );
+
+  securityAlarmSound();
+
+  let introSeconds = 5;
+
+  clearInterval(
+    securityTimer
+  );
+
+  securityTimer =
+    setInterval(
+      ()=>{
+
+        introSeconds--;
+
+        securityCountdown.textContent =
+          "SYSTEMSPERRE // 00:0" +
+          Math.max(
+            introSeconds,
+            0
+          );
+
+        if(
+          introSeconds <= 0
+        ){
+
+          clearInterval(
+            securityTimer
+          );
+
+          securityLock.classList.remove(
+            "active",
+            "alarm-flash"
+          );
+
+          introAnswer.disabled =
+            false;
+
+          introCheckButton.disabled =
+            false;
+
+          introAnswer.value =
+            "";
+
+          introError.innerHTML =
+            "IDENTITÄT NICHT BESTÄTIGT // " +
+            "ERNEUTE PRÜFUNG ERFORDERLICH";
+
+          introAnswer.focus();
+        }
+
+      },
+      1000
+    );
+}
+
+
+/* ==========================================================
+   BRIEFING → BESTEHENDE ZENTRALE
+   ========================================================== */
+
+briefingContinue.addEventListener(
+  "touchstart",
+  ()=>ensureAudio(),
+  {passive:true}
+);
+
+
+briefingContinue.addEventListener(
+  "click",
+  async()=>{
+
+    await ensureAudio();
+introMusic.pause();
+introMusic.currentTime = 0;
+    buttonClick();
+
+    briefingContinue.disabled =
+      true;
+
+    introBriefing.classList.add(
+      "zoomAway"
+    );
+
+    setTimeout(
+      async()=>{
+
+        cinematicIntro.style.display =
+          "none";
+
+        /*
+          Die alte Login-Fläche wird übersprungen.
+          Danach übernimmt ausschließlich die bereits
+          vorhandene Zentrale.
+        */
+
+        gate.style.display =
+          "none";
+
+        topPanel.style.display =
+          "none";
+
+        await showCentral();
+
+      },
+      700
+    );
+  }
+);
+
+
+
+/* ==========================================================
+   MISSIONSMARKER // STATUS
+   ========================================================== */
+
+function setNorddeichMissionState(state){
+  const marker =
+    document.getElementById("norddeichMission");
+
+  if(!marker)return;
+
+  const completed =
+    state==="completed";
+
+  marker.dataset.state =
+    completed ? "completed" : "open";
+
+  marker.classList.toggle(
+    "completed",
+    completed
+  );
+
+  marker.classList.toggle(
+    "open",
+    !completed
+  );
+
+  const status =
+    marker.querySelector(
+      ".map-mission-status"
+    );
+
+  if(status){
+    status.textContent =
+      completed
+        ? "EINSATZ ABGESCHLOSSEN"
+        : "EINSATZ OFFEN";
+  }
+}
+
+/* ==========================================================
+   EINSATZKARTE // BLINK + PAN + PINCH-ZOOM
+   ========================================================== */
+
+const missionMap =
+  document.getElementById("missionMap");
+
+const missionMapViewport =
+  document.getElementById("missionMapViewport");
+
+const missionMapWorld =
+  document.getElementById("missionMapWorld");
+
+const missionMapBack =
+  document.getElementById("missionMapBack");
+
+const missionMapHint =
+  document.getElementById("missionMapHint");
+
+const missionBlink =
+  document.getElementById("missionBlink");
+
+let missionMapSource = "northwind";
+let missionMapScrollY = 0;
+let mapX = 0;
+let mapY = 0;
+let mapScale = 1;
+let mapStartX = 0;
+let mapStartY = 0;
+let mapStartScale = 1;
+let mapStartDistance = 0;
+let mapStartCenter = null;
+const mapPointers = new Map();
+
+function clampMissionMapPosition(){
+  if(mapScale<=1.001){
+    mapX = 0;
+    mapY = 0;
+    return;
+  }
+
+  const viewportRect =
+    missionMapViewport.getBoundingClientRect();
+
+  const worldWidth =
+    missionMapWorld.offsetWidth;
+
+  const worldHeight =
+    missionMapWorld.offsetHeight;
+
+  const scaledWidth =
+    worldWidth * mapScale;
+
+  const scaledHeight =
+    worldHeight * mapScale;
+
+  const maxX =
+    Math.max(
+      0,
+      (scaledWidth - viewportRect.width) / 2
+    );
+
+  const maxY =
+    Math.max(
+      0,
+      (scaledHeight - viewportRect.height) / 2
+    );
+
+  mapX =
+    Math.max(-maxX,Math.min(maxX,mapX));
+
+  mapY =
+    Math.max(-maxY,Math.min(maxY,mapY));
+}
+
+function applyMissionMapTransform(){
+  clampMissionMapPosition();
+
+  missionMapWorld.style.transform =
+    `translate(-50%,-50%) translate3d(${mapX}px,${mapY}px,0) scale(${mapScale})`;
+}
+
+function resetMissionMap(){
+  mapX = 0;
+  mapY = 0;
+  mapScale = 1;
+  mapPointers.clear();
+  applyMissionMapTransform();
+}
+
+function blinkToMissionMap(source){
+  missionMapSource = source;
+
+  missionBlink.classList.remove("active");
+  void missionBlink.offsetWidth;
+  missionBlink.classList.add("active");
+
+  setTimeout(()=>{
+    northwindViewer.style.display = "none";
+    greyfoxViewer.style.display = "none";
+
+    resetMissionMap();
+
+    missionMapScrollY = window.scrollY || 0;
+    document.documentElement.classList.add("mission-map-open");
+    document.body.classList.add("mission-map-open");
+    document.body.style.top = `-${missionMapScrollY}px`;
+
+    missionMap.classList.add("active");
+    missionMap.setAttribute("aria-hidden","false");
+
+    missionMapHint.style.opacity = "1";
+
+    setTimeout(()=>{
+      missionMapHint.style.opacity = "0";
+    },2600);
+  },120);
+
+  setTimeout(()=>{
+    missionBlink.classList.remove("active");
+  },380);
+}
+
+function closeMissionMap(){
+  missionMap.classList.remove("active");
+  missionMap.setAttribute("aria-hidden","true");
+
+  document.documentElement.classList.remove("mission-map-open");
+  document.body.classList.remove("mission-map-open");
+  document.body.style.top = "";
+  window.scrollTo(0,missionMapScrollY);
+
+  if(missionMapSource==="greyfox"){
+    greyfoxViewer.style.display = "block";
+  }else{
+    northwindViewer.style.display = "block";
+  }
+}
+
+function pointerDistance(){
+  const pts = [...mapPointers.values()];
+  if(pts.length < 2)return 0;
+  return Math.hypot(
+    pts[1].x - pts[0].x,
+    pts[1].y - pts[0].y
+  );
+}
+
+function pointerCenter(){
+  const pts = [...mapPointers.values()];
+  if(pts.length < 2)return null;
+  return {
+    x:(pts[0].x + pts[1].x)/2,
+    y:(pts[0].y + pts[1].y)/2
+  };
+}
+
+["touchstart","touchmove","touchend","touchcancel"].forEach(
+  type=>{
+    missionMapViewport.addEventListener(
+      type,
+      e=>{
+        if(missionMap.classList.contains("active")){
+          e.preventDefault();
+        }
+      },
+      {passive:false}
+    );
+  }
+);
+
+missionMapViewport.addEventListener(
+  "pointerdown",
+  e=>{
+    e.preventDefault();
+    missionMapViewport.setPointerCapture?.(e.pointerId);
+
+    mapPointers.set(
+      e.pointerId,
+      {x:e.clientX,y:e.clientY}
+    );
+
+    if(mapPointers.size===1){
+      mapStartX = e.clientX - mapX;
+      mapStartY = e.clientY - mapY;
+    }
+
+    if(mapPointers.size===2){
+      mapStartDistance = pointerDistance();
+      mapStartScale = mapScale;
+      mapStartCenter = pointerCenter();
+    }
+  }
+);
+
+missionMapViewport.addEventListener(
+  "pointermove",
+  e=>{
+    if(!mapPointers.has(e.pointerId))return;
+
+    e.preventDefault();
+
+    mapPointers.set(
+      e.pointerId,
+      {x:e.clientX,y:e.clientY}
+    );
+
+    if(mapPointers.size===1){
+      if(mapScale<=1.001){
+        mapX = 0;
+        mapY = 0;
+        applyMissionMapTransform();
+        return;
+      }
+
+      mapX = e.clientX - mapStartX;
+      mapY = e.clientY - mapStartY;
+      applyMissionMapTransform();
+      return;
+    }
+
+    if(mapPointers.size>=2){
+      const distance = pointerDistance();
+      const center = pointerCenter();
+
+      if(mapStartDistance>0){
+        mapScale = Math.min(
+          4,
+          Math.max(
+            1,
+            mapStartScale * distance / mapStartDistance
+          )
+        );
+      }
+
+      if(center && mapStartCenter){
+        mapX += center.x - mapStartCenter.x;
+        mapY += center.y - mapStartCenter.y;
+        mapStartCenter = center;
+      }
+
+      applyMissionMapTransform();
+    }
+  }
+);
+
+function releaseMapPointer(e){
+  mapPointers.delete(e.pointerId);
+
+  if(mapPointers.size===1){
+    const p = [...mapPointers.values()][0];
+    mapStartX = p.x - mapX;
+    mapStartY = p.y - mapY;
+  }
+
+  if(mapPointers.size<2){
+    mapStartDistance = 0;
+    mapStartCenter = null;
+  }
+}
+
+missionMapViewport.addEventListener(
+  "pointerup",
+  releaseMapPointer
+);
+
+missionMapViewport.addEventListener(
+  "pointercancel",
+  releaseMapPointer
+);
+
+window.addEventListener(
+  "resize",
+  ()=>{
+    if(missionMap.classList.contains("active")){
+      applyMissionMapTransform();
+    }
+  }
+);
+
+missionMapBack.addEventListener(
+  "click",
+  e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    closeMissionMap();
+  }
+);
+
+</script>
+</body>
+</html>
